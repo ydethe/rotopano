@@ -18,53 +18,10 @@
  CONSTRUCTOR
  ***************************************************************************/
 
-void Adafruit_LSM9DS0::initI2C( TwoWire* wireBus, int32_t sensorID ) {
-    _i2c = true;
-    _wire = wireBus;
-    _lsm9dso_sensorid_accel = sensorID + 1;
-    _lsm9dso_sensorid_mag = sensorID + 2;
-    _lsm9dso_sensorid_gyro = sensorID + 3;
-    _lsm9dso_sensorid_temp = sensorID + 4;
-    _accelSensor = Sensor(this, &Adafruit_LSM9DS0::readAccel, &Adafruit_LSM9DS0::getAccelEvent, &Adafruit_LSM9DS0::getAccelSensor);
-    _magSensor   = Sensor(this, &Adafruit_LSM9DS0::readMag,   &Adafruit_LSM9DS0::getMagEvent,   &Adafruit_LSM9DS0::getMagSensor);
-    _gyroSensor  = Sensor(this, &Adafruit_LSM9DS0::readGyro,  &Adafruit_LSM9DS0::getGyroEvent,  &Adafruit_LSM9DS0::getGyroSensor);
-    _tempSensor  = Sensor(this, &Adafruit_LSM9DS0::readTemp,  &Adafruit_LSM9DS0::getTempEvent,  &Adafruit_LSM9DS0::getTempSensor);
-}
-
-
-// default
-Adafruit_LSM9DS0::Adafruit_LSM9DS0( int32_t sensorID ) {
-    initI2C(&Wire, sensorID);
-}
-
-Adafruit_LSM9DS0::Adafruit_LSM9DS0( TwoWire* wireBus, int32_t sensorID ) {
-    initI2C(wireBus, sensorID);
-}
-
 Adafruit_LSM9DS0::Adafruit_LSM9DS0(int8_t xmcs, int8_t gcs, int32_t sensorID ) {
-  _i2c = false;
   // hardware SPI!
   _csg = gcs;
   _csxm = xmcs;
-  _mosi = _miso = _clk = -1;
-  _lsm9dso_sensorid_accel = sensorID + 1;
-  _lsm9dso_sensorid_mag = sensorID + 2;
-  _lsm9dso_sensorid_gyro = sensorID + 3;
-  _lsm9dso_sensorid_temp = sensorID + 4;
-  _accelSensor = Sensor(this, &Adafruit_LSM9DS0::readAccel, &Adafruit_LSM9DS0::getAccelEvent, &Adafruit_LSM9DS0::getAccelSensor);
-  _magSensor   = Sensor(this, &Adafruit_LSM9DS0::readMag,   &Adafruit_LSM9DS0::getMagEvent,   &Adafruit_LSM9DS0::getMagSensor);
-  _gyroSensor  = Sensor(this, &Adafruit_LSM9DS0::readGyro,  &Adafruit_LSM9DS0::getGyroEvent,  &Adafruit_LSM9DS0::getGyroSensor);
-  _tempSensor  = Sensor(this, &Adafruit_LSM9DS0::readTemp,  &Adafruit_LSM9DS0::getTempEvent,  &Adafruit_LSM9DS0::getTempSensor);
-}
-
-Adafruit_LSM9DS0::Adafruit_LSM9DS0(int8_t clk, int8_t miso, int8_t mosi, int8_t xmcs, int8_t gcs, int32_t sensorID ) {
-  _i2c = false;
-  // software SPI!
-  _csg = gcs;
-  _csxm = xmcs;
-  _mosi = mosi;
-  _miso = miso;
-  _clk = clk;
   _lsm9dso_sensorid_accel = sensorID + 1;
   _lsm9dso_sensorid_mag = sensorID + 2;
   _lsm9dso_sensorid_gyro = sensorID + 3;
@@ -77,25 +34,12 @@ Adafruit_LSM9DS0::Adafruit_LSM9DS0(int8_t clk, int8_t miso, int8_t mosi, int8_t 
 
 bool Adafruit_LSM9DS0::begin()
 {
-  if (_i2c) {
-    _wire->begin();
-  } else if (_clk == -1) {
-    // Hardware SPI
-    pinMode(_csxm, OUTPUT);
-    pinMode(_csg, OUTPUT);
-    digitalWrite(_csxm, HIGH);
-    digitalWrite(_csg, HIGH);
-    SPI.begin();
-  } else {
-    // Sofware SPI
-    pinMode(_clk, OUTPUT);
-    pinMode(_mosi, OUTPUT);
-    pinMode(_csxm, OUTPUT);
-    pinMode(_csg, OUTPUT);
-    digitalWrite(_csxm, HIGH);
-    digitalWrite(_csg, HIGH);
-    digitalWrite(_clk, HIGH);
-  }
+ // Hardware SPI
+ pinMode(_csxm, OUTPUT);
+ pinMode(_csg, OUTPUT);
+ digitalWrite(_csxm, HIGH);
+ digitalWrite(_csg, HIGH);
+ // SPI.begin();
 
   uint8_t id = read8(XMTYPE, LSM9DS0_REGISTER_WHO_AM_I_XM);
 //  Serial.print ("XM whoami: 0x");
@@ -360,22 +304,16 @@ void Adafruit_LSM9DS0::write8(boolean type, byte reg, byte value)
   } else {
     address = LSM9DS0_ADDRESS_ACCELMAG;
     _cs = _csxm;
-  }
-  if (_i2c) {
-    _wire->beginTransmission(address);
-    _wire->write(reg);
-    _wire->write(value);
-    _wire->endTransmission();
-  } else {
-    SPI.beginTransaction(SPISettings(200000, MSBFIRST, SPI_MODE0));
+ }
+ 
+    // SPI.beginTransaction(SPISettings(200000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
     // set address
     spixfer(reg | 0x40); // write multiple
     spixfer(value); 
     digitalWrite(_cs, HIGH);
-    SPI.endTransaction();
-
-  }
+    // SPI.endTransaction();
+    
 }
 
 byte Adafruit_LSM9DS0::read8(boolean type, byte reg)
@@ -398,55 +336,27 @@ byte Adafruit_LSM9DS0::readBuffer(boolean type, byte reg, byte len, uint8_t *buf
     address = LSM9DS0_ADDRESS_ACCELMAG;
     _cs = _csxm;
   }
-    
-    
-
-  if (_i2c) {
-#ifdef __SAM3X8E__
-      _wire->requestFrom(address, len, reg, 1, true); //see http://forum.arduino.cc/index.php?topic=385377.msg2947227#msg2947227
-#else
-      _wire->beginTransmission(address);
-      _wire->write(reg);
-      _wire->endTransmission();
-      _wire->requestFrom(address, (byte)len);
-#endif
-
-    for (uint8_t i=0; i<len; i++) {
-      buffer[i] = _wire->read();
-    }
-  } else {
-    SPI.beginTransaction(SPISettings(200000, MSBFIRST, SPI_MODE0));
-    digitalWrite(_cs, LOW);
-    // set address
-    spixfer(reg | 0x80 | 0x40); // read multiple
-    for (uint8_t i=0; i<len; i++) {
-      buffer[i] = spixfer(0);
-    }
-    digitalWrite(_cs, HIGH);
-    SPI.endTransaction();
-
-  }
-
+ 
+ // SPI.beginTransaction(SPISettings(200000, MSBFIRST, SPI_MODE0));
+ digitalWrite(_cs, LOW);
+ // set address
+ spixfer(reg | 0x80 | 0x40); // read multiple
+ for (uint8_t i=0; i<len; i++) {
+   buffer[i] = spixfer(0);
+ }
+ digitalWrite(_cs, HIGH);
+ // SPI.endTransaction();
+ 
   return len;
 }
 
 uint8_t Adafruit_LSM9DS0::spixfer(uint8_t data) {
 
-  if (_clk == -1) {
-      //Serial.println("Hardware SPI");
-      return SPI.transfer(data);
-  } else {
-    //Serial.println("Software SPI");
-      uint8_t reply = 0;    for (int i=7; i>=0; i--) {
-      reply <<= 1;
-      digitalWrite(_clk, LOW);
-      digitalWrite(_mosi, data & (1<<i));
-      digitalWrite(_clk, HIGH);
-      if (digitalRead(_miso)) 
-          reply |= 1;
-    }
-    return reply;
-  }
+  //Serial.println("Hardware SPI");
+  // return SPI.transfer(data);
+  
+   return wiringPiSPIDataRW(int channel, unsigned char *data, int len) ;;
+   
 }
 
 void Adafruit_LSM9DS0::getAccelEvent(sensors_event_t* event, uint32_t timestamp) {
