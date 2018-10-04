@@ -355,7 +355,7 @@ uint8_t Adafruit_LSM9DS0::spixfer(uint8_t data) {
   //Serial.println("Hardware SPI");
   // return SPI.transfer(data);
   
-   return wiringPiSPIDataRW(int channel, unsigned char *data, int len) ;;
+   return wiringPiSPIDataRW(SPI_CHANNEL, &data, 1) ;
    
 }
 
