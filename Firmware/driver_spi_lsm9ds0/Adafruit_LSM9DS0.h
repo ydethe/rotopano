@@ -15,6 +15,7 @@
 #ifndef __LSM9DS0_H__
 #define __LSM9DS0_H__
 
+#include <iostream>
 #include <stdint.h>
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
@@ -56,6 +57,7 @@ typedef bool boolean;
 #define SPI_CHANNEL                        0
 #define SPI_SPEED                          200000
 #define SPI_MODE                           0
+#define SPI_BUFFER_LEN                     4000
 
 /* Forward reference required for function pointers below. */
 class Adafruit_LSM9DS0;
@@ -236,6 +238,9 @@ class Adafruit_LSM9DS0
 
   private:
     int spi_fd;
+    int spi_index;
+    unsigned char spi_data[SPI_BUFFER_LEN];
+    
     int8_t  _csg, _csxm;
     float   _accel_mg_lsb;
     float   _mag_mgauss_lsb;

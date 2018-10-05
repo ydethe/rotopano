@@ -39,13 +39,14 @@ bool Adafruit_LSM9DS0::begin()
  pinMode(_csg, OUTPUT);
  digitalWrite(_csxm, HIGH);
  digitalWrite(_csg, HIGH);
+ spi_index = 0;
  // SPI.begin();
 
   uint8_t id = read8(XMTYPE, LSM9DS0_REGISTER_WHO_AM_I_XM);
 //  Serial.print ("XM whoami: 0x");
 //   Serial.println(id, HEX);
-  if (id != LSM9DS0_XM_ID)
-    return false;
+//  if (id != LSM9DS0_XM_ID)
+//    return false;
 
   id = read8(GYROTYPE, LSM9DS0_REGISTER_WHO_AM_I_G);
 //   Serial.print ("G whoami: 0x");
@@ -351,11 +352,17 @@ byte Adafruit_LSM9DS0::readBuffer(boolean type, byte reg, byte len, uint8_t *buf
 }
 
 uint8_t Adafruit_LSM9DS0::spixfer(uint8_t data) {
-
-  //Serial.println("Hardware SPI");
-  // return SPI.transfer(data);
+   //Serial.println("Hardware SPI");
+   // return SPI.transfer(data);
   
-   return wiringPiSPIDataRW(SPI_CHANNEL, &data, 1) ;
+   if (data == 0) {
+      return spi_data[spi_index++];
+   } else {
+      spi_index = 0;
+      spi_data[0] = data;
+      std::cout << wiringPiSPIDataRW(SPI_CHANNEL, spi_data, 1) << std::endl;
+      return spi_data[spi_index++];
+   }
    
 }
 
