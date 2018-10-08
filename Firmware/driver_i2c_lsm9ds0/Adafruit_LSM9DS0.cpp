@@ -18,30 +18,40 @@
  CONSTRUCTOR
  ***************************************************************************/
 
-Adafruit_LSM9DS0::Adafruit_LSM9DS0(int8_t xmcs, int8_t gcs, int32_t sensorID ) {
-  // hardware SPI!
-  _csg = gcs;
-  _csxm = xmcs;
-  _lsm9dso_sensorid_accel = sensorID + 1;
-  _lsm9dso_sensorid_mag = sensorID + 2;
-  _lsm9dso_sensorid_gyro = sensorID + 3;
-  _lsm9dso_sensorid_temp = sensorID + 4;
-  _accelSensor = Sensor(this, &Adafruit_LSM9DS0::readAccel, &Adafruit_LSM9DS0::getAccelEvent, &Adafruit_LSM9DS0::getAccelSensor);
-  _magSensor   = Sensor(this, &Adafruit_LSM9DS0::readMag,   &Adafruit_LSM9DS0::getMagEvent,   &Adafruit_LSM9DS0::getMagSensor);
-  _gyroSensor  = Sensor(this, &Adafruit_LSM9DS0::readGyro,  &Adafruit_LSM9DS0::getGyroEvent,  &Adafruit_LSM9DS0::getGyroSensor);
-  _tempSensor  = Sensor(this, &Adafruit_LSM9DS0::readTemp,  &Adafruit_LSM9DS0::getTempEvent,  &Adafruit_LSM9DS0::getTempSensor);
+int32_t Adafruit_LSM9DS0::initI2C( int32_t sensorID ) {
+    xm_fd = i2cOpen(3, LSM9DS0_ADDRESS_ACCELMAG, 0);
+    if (xm_fd == -1) {
+      std::cerr << "Erreur init I2C XM : " << xm_fd << std::endl;
+      return -1;
+    }
+    
+    gy_fd = i2cOpen(3, LSM9DS0_ADDRESS_ACCELMAG, 0);
+    if (gy_fd == -1) {
+      std::cerr << "Erreur init I2C GYRO : " << gy_fd << std::endl;
+      return -2;
+    }
+    
+    _lsm9dso_sensorid_accel = sensorID + 1;
+    _lsm9dso_sensorid_mag = sensorID + 2;
+    _lsm9dso_sensorid_gyro = sensorID + 3;
+    _lsm9dso_sensorid_temp = sensorID + 4;
+    _accelSensor = Sensor(this, &Adafruit_LSM9DS0::readAccel, &Adafruit_LSM9DS0::getAccelEvent, &Adafruit_LSM9DS0::getAccelSensor);
+    _magSensor   = Sensor(this, &Adafruit_LSM9DS0::readMag,   &Adafruit_LSM9DS0::getMagEvent,   &Adafruit_LSM9DS0::getMagSensor);
+    _gyroSensor  = Sensor(this, &Adafruit_LSM9DS0::readGyro,  &Adafruit_LSM9DS0::getGyroEvent,  &Adafruit_LSM9DS0::getGyroSensor);
+    _tempSensor  = Sensor(this, &Adafruit_LSM9DS0::readTemp,  &Adafruit_LSM9DS0::getTempEvent,  &Adafruit_LSM9DS0::getTempSensor);
+    
+    return 0;
+    
+}
+
+
+// default
+Adafruit_LSM9DS0::Adafruit_LSM9DS0() {
+   initI2C(0);
 }
 
 bool Adafruit_LSM9DS0::begin()
 {
- // Hardware SPI
- pinMode(_csxm, OUTPUT);
- pinMode(_csg, OUTPUT);
- digitalWrite(_csxm, HIGH);
- digitalWrite(_csg, HIGH);
- spi_index = 0;
- // SPI.begin();
-
   uint8_t id = read8(XMTYPE, LSM9DS0_REGISTER_WHO_AM_I_XM);
 //  Serial.print ("XM whoami: 0x");
 //   Serial.println(id, HEX);
@@ -65,14 +75,6 @@ bool Adafruit_LSM9DS0::begin()
   uint8_t tempReg = read8(XMTYPE, LSM9DS0_REGISTER_CTRL_REG5_XM);
   write8(XMTYPE, LSM9DS0_REGISTER_CTRL_REG5_XM, tempReg | (1<<7));
   
-  /*
-  for (uint8_t i=0; i<0x30; i++) {
-    Serial.print("$"); Serial.print(i, HEX);
-    Serial.print(" = 0x"); 
-    Serial.println(read8(XMTYPE, i), HEX);
-  }
-  */
-
   // Set default ranges for the various sensors  
   setupAccel(LSM9DS0_ACCELRANGE_2G);
   setupMag(LSM9DS0_MAGGAIN_2GAUSS);
@@ -297,73 +299,56 @@ void Adafruit_LSM9DS0::getSensor(sensor_t *accel, sensor_t *mag,
  ***************************************************************************/
 void Adafruit_LSM9DS0::write8(boolean type, byte reg, byte value)
 {
-  byte address, _cs;
+  int fd, istat;
 
   if (type == GYROTYPE) {
-    address = LSM9DS0_ADDRESS_GYRO;
-    _cs = _csg;
+    fd = gy_fd;
   } else {
-    address = LSM9DS0_ADDRESS_ACCELMAG;
-    _cs = _csxm;
- }
- 
-    // SPI.beginTransaction(SPISettings(200000, MSBFIRST, SPI_MODE0));
-    digitalWrite(_cs, LOW);
-    // set address
-    spixfer(reg | 0x40); // write multiple
-    spixfer(value); 
-    digitalWrite(_cs, HIGH);
-    // SPI.endTransaction();
-    
+    fd = xm_fd;
+  }
+  
+  istat = i2cWriteByteData(fd, reg, value);
+  if (istat != 0) {
+     std::cerr << "Pb lecture i2cWriteByteData : " << istat << std::endl;
+  }
+  
 }
 
 byte Adafruit_LSM9DS0::read8(boolean type, byte reg)
 {
-  uint8_t value;
+  int fd, value;
 
-  readBuffer(type, reg, 1, &value);
+  if (type == GYROTYPE) {
+    fd = gy_fd;
+  } else {
+    fd = xm_fd;
+  }
+
+  value = i2cReadByteData(fd, reg);
+  if (value < 0) {
+     std::cerr << "Pb lecture i2cReadByteData : " << value << std::endl;
+  }
 
   return value;
+  
 }
 
 byte Adafruit_LSM9DS0::readBuffer(boolean type, byte reg, byte len, uint8_t *buffer)
 {
-  byte address, _cs;
+  int fd, bytes_read;
 
   if (type == GYROTYPE) {
-    address = LSM9DS0_ADDRESS_GYRO;
-    _cs = _csg;
+    fd = gy_fd;
   } else {
-    address = LSM9DS0_ADDRESS_ACCELMAG;
-    _cs = _csxm;
+    fd = xm_fd;
   }
- 
- // SPI.beginTransaction(SPISettings(200000, MSBFIRST, SPI_MODE0));
- digitalWrite(_cs, LOW);
- // set address
- spixfer(reg | 0x80 | 0x40); // read multiple
- for (uint8_t i=0; i<len; i++) {
-   buffer[i] = spixfer(0);
- }
- digitalWrite(_cs, HIGH);
- // SPI.endTransaction();
- 
-  return len;
-}
 
-uint8_t Adafruit_LSM9DS0::spixfer(uint8_t data) {
-   //Serial.println("Hardware SPI");
-   // return SPI.transfer(data);
-  
-   if (data == 0) {
-      return spi_data[spi_index++];
-   } else {
-      spi_index = 0;
-      spi_data[0] = data;
-      std::cout << wiringPiSPIDataRW(SPI_CHANNEL, spi_data, 1) << std::endl;
-      return spi_data[spi_index++];
+   bytes_read = i2cReadI2CBlockData(fd, reg, buffer, len);
+   if (bytes_read != len) {
+     std::cerr << "Pb lecture : " << bytes_read << "o lus au lieu de " << len << std::endl;
    }
-   
+
+  return bytes_read;
 }
 
 void Adafruit_LSM9DS0::getAccelEvent(sensors_event_t* event, uint32_t timestamp) {
