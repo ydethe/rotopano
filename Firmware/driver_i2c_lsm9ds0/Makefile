@@ -8,15 +8,15 @@ default: test.exe
 	
 test: test.exe
 	$(Q)echo Lancement du test
-	$(Q)./$<
+	$(Q)/usr/bin/sudo ./$<
 
 test.exe: $(OBJ)
 	$(Q)echo Edition de liens...
-	$(Q)g++ -o $@ $^ -lwiringPi
+	$(Q)g++ -o $@ $^ -lpigpio -lpthread
 
 %.o: %.cpp $(HDR)
 	$(Q)echo Compilation de $<
-	$(Q)g++ -c -I. $< -o $@
+	$(Q)g++ -c $< -o $@
    
 clean:
 	$(Q)rm -rf $(OBJ) test.exe

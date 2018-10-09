@@ -1,20 +1,22 @@
 #include <stdint.h>
 #include <string.h>
 #include <iostream>
-#include "Adafruit_LSM9DS0.h"
+#include "lsm9ds0_yann.h"
+#include "util.h"
 
 
 int main(int argc, char** argv) {
-   Adafruit_LSM9DS0 a = Adafruit_LSM9DS0();
+   gpioInitialise();
    
-   if (!a.begin()) {
-      std::cerr << "Erreur lors de l'appel a begin" << std::endl;
-      return 1;
+   initialiseEpoch();
+   
+   LSM9DS0 a = LSM9DS0();
+   
+   for (int i=0; i<1000; i++) {
+      a.readAccel();
+      std::cout << a.accelData.x << "," << a.accelData.y << "," << a.accelData.z << std::endl;
+      //std::cout << a.gyroData.x << "," << a.gyroData.y << "," << a.gyroData.z << std::endl;
    }
-   
-   a.read();
-   
-   std::cout << a.accelData.x << "," << a.accelData.y << "," << a.accelData.z << std::endl;
    
    return 0;
    

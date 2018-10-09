@@ -12,7 +12,7 @@
   Written by Kevin Townsend for Adafruit Industries.  
   BSD license, all text above must be included in any redistribution
  ***************************************************************************/
-#include <Adafruit_LSM9DS0.h>
+#include "Adafruit_LSM9DS0.h"
 
 /***************************************************************************
  CONSTRUCTOR
@@ -52,17 +52,19 @@ Adafruit_LSM9DS0::Adafruit_LSM9DS0() {
 
 bool Adafruit_LSM9DS0::begin()
 {
-  uint8_t id = read8(XMTYPE, LSM9DS0_REGISTER_WHO_AM_I_XM);
-//  Serial.print ("XM whoami: 0x");
-//   Serial.println(id, HEX);
-  if (id != LSM9DS0_XM_ID)
+  uint8_t id;
+  
+  id = read8(XMTYPE, LSM9DS0_REGISTER_WHO_AM_I_XM);
+  if (id != LSM9DS0_XM_ID) {
+    std::cerr << "XM : " << LSM9DS0_XM_ID << "," << (int)id << std::endl;
     return false;
+  }
 
   id = read8(GYROTYPE, LSM9DS0_REGISTER_WHO_AM_I_G);
-//   Serial.print ("G whoami: 0x");
-//   Serial.println(id, HEX);
-  if (id != LSM9DS0_G_ID)
+  if (id != LSM9DS0_G_ID) {
+    std::cerr << "G : " << LSM9DS0_G_ID << "," << (int)id << std::endl;
     return false;
+  }
 
   // Enable the accelerometer continous
   write8(XMTYPE, LSM9DS0_REGISTER_CTRL_REG1_XM, 0x67); // 100hz XYZ
@@ -343,7 +345,7 @@ byte Adafruit_LSM9DS0::readBuffer(boolean type, byte reg, byte len, uint8_t *buf
     fd = xm_fd;
   }
 
-   bytes_read = i2cReadI2CBlockData(fd, reg, buffer, len);
+   bytes_read = i2cReadI2CBlockData(fd, reg, (char*)buffer, len);
    if (bytes_read != len) {
      std::cerr << "Pb lecture : " << bytes_read << "o lus au lieu de " << len << std::endl;
    }

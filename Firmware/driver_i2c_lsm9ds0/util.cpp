@@ -1,3 +1,18 @@
+#include <time.h>
+#include <stdint.h>
+
+
+static uint64_t epochMilli, epochMicro;
+
+void initialiseEpoch(void) {
+   struct timespec ts;
+   
+   clock_gettime (CLOCK_MONOTONIC_RAW, &ts) ;
+   epochMilli = (uint64_t)ts.tv_sec * (uint64_t)1000    + (uint64_t)(ts.tv_nsec / 1000000L) ;
+   epochMicro = (uint64_t)ts.tv_sec * (uint64_t)1000000 + (uint64_t)(ts.tv_nsec / 1000L) ;
+   
+}
+
 /*
  * millis:
  *	Return a number of milliseconds as an unsigned int.

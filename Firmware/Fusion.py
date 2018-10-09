@@ -37,9 +37,16 @@ class IMUTest (object):
       
       time.sleep(0.05)
       
-      self.read()
-      while False:
-         self.read()
+      while True:
+         if self.imu.IMURead():
+            data = self.imu.getIMUData()
+            fusionPose = data["fusionPose"]
+            print("r: %f p: %f y: %f" % (math.degrees(fusionPose[0]), math.degrees(fusionPose[1]), math.degrees(fusionPose[2])))
+            time.sleep(self.poll_interval*1.0/1000.0)
+
+#       self.read()
+#       while True:
+#          self.read()
          
    def read(self):
        if self.imu.IMURead():

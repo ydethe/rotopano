@@ -1,3 +1,8 @@
+
+
+
+void initialiseEpoch();
+
 /*
  * millis:
  *	Return a number of milliseconds as an unsigned int.
