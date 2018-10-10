@@ -102,7 +102,14 @@
 #define LSM9DS0_GYROSCALE_245DPS           (0b00 << 4)   // +/- 245 degrees per second rotation
 #define LSM9DS0_GYROSCALE_500DPS           (0b01 << 4)   // +/- 500 degrees per second rotation
 #define LSM9DS0_GYROSCALE_2000DPS          (0b10 << 4)   // +/- 2000 degrees per second rotation
-      
+
+#define SENSORS_GRAVITY_STANDARD           (9.80665F)           /**< Earth's gravity in m/s^2 */
+#define SENSORS_MAGFIELD_EARTH_MAX         (60.0F)                 /**< Maximum magnetic field on Earth's surface */
+#define SENSORS_MAGFIELD_EARTH_MIN         (30.0F)                 /**< Minimum magnetic field on Earth's surface */
+#define SENSORS_PRESSURE_SEALEVELHPA       (1013.25F)              /**< Average sea level pressure is 1013.25 hPa */
+#define SENSORS_DPS_TO_RADS                (0.017453293F)          /**< Degrees/s to rad/s multiplier */
+#define SENSORS_GAUSS_TO_MICROTESLA        (100)                   /**< Gauss to micro-Tesla multiplier */
+
 
 class LSM9DS0 {
 public:

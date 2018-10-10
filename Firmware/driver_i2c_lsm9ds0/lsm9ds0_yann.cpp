@@ -130,9 +130,9 @@ void LSM9DS0::readAccel() {
   xhi <<= 8; xhi |= xlo;
   yhi <<= 8; yhi |= ylo;
   zhi <<= 8; zhi |= zlo;
-  accelData.x = xhi;
-  accelData.y = yhi;
-  accelData.z = zhi;
+  accelData.x = xhi*_accel_mg_lsb/1000.;
+  accelData.y = yhi*_accel_mg_lsb/1000.;
+  accelData.z = zhi*_accel_mg_lsb/1000.;
   
 }
 

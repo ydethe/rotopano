@@ -48,6 +48,7 @@ int32_t Adafruit_LSM9DS0::initI2C( int32_t sensorID ) {
 // default
 Adafruit_LSM9DS0::Adafruit_LSM9DS0() {
    initI2C(0);
+	begin();
 }
 
 bool Adafruit_LSM9DS0::begin()
