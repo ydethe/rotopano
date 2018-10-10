@@ -1,7 +1,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <iostream>
-#include "lsm9ds0_yann.h"
+// #include "lsm9ds0_yann.h"
+#include "Adafruit_LSM9DS0.h"
 #include "util.h"
 
 
@@ -10,7 +11,8 @@ int main(int argc, char** argv) {
    
    initialiseEpoch();
    
-   LSM9DS0 a = LSM9DS0();
+   // LSM9DS0 a = LSM9DS0();
+   Adafruit_LSM9DS0 a = Adafruit_LSM9DS0();
    
    for (int i=0; i<1000; i++) {
       a.readAccel();
