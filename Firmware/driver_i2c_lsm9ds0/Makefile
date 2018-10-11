@@ -4,16 +4,13 @@ SWG_SRC = $(SWG_ITF:.i=_wrap.cxx)
 SRC = $(wildcard *.cpp)
 OBJ = $(SRC:.cpp=.o) $(SWG_SRC:.cxx=.o)
 
-INC := $(shell python3-config --includes)
-CFLAGS := -fPIC $(shell python3-config --cflags)
-LDFLAGS := -shared $(shell python3-config --ldflags)
+PY_CONF = /home/pi/.berryconda/bin/python3-config
 
-WK_DIR = rotopano/Firmware/driver_i2c_lsm9ds0
+INC := $(shell $(PY_CONF) --includes)
+CFLAGS := -fPIC $(shell $(PY_CONF) --cflags)
+LDFLAGS := -shared $(shell $(PY_CONF) --ldflags)
+
 EXE = test.exe
-
-ifndef ssh
-TEST_DEP=$(EXE)
-endif
 
 ifdef verbose
 Q=
@@ -21,25 +18,14 @@ else
 Q=@
 endif
 
-debug:
-	$(Q)echo $(INC)
 
-default: $(TEST_DEP)
-ifeq ($(TEST_DEP), "")
-	$(Q)rsync -rav -e ssh . raspberry:$(WK_DIR)
-	$(Q)ssh raspberry "cd $(WK_DIR) && make"
-endif
+default: $(EXE)
 
-test: $(TEST_DEP)
-ifndef TEST_DEP
-	$(Q)echo Lancement du test par SSH
-	$(Q)rsync -rav -e ssh . raspberry:$(WK_DIR)
-	$(Q)ssh raspberry ". ~/.zshrc && cd $(WK_DIR) && make verbose=1 test"
-else
+test: $(EXE)
+	$(Q)echo $(OBJ)
 	$(Q)echo Lancement du test
 	$(Q)sudo ./$<
-endif
-
+	
 $(EXE): $(OBJ)
 	$(Q)echo Edition de liens...
 	$(Q)g++ $(LDFLAGS) -o $@ $^ -lpigpio -lpthread
