@@ -1,5 +1,5 @@
 /* File: example.i */
-%module example
+%module imu_driver
 
 %{
 #define SWIG_FILE_WITH_INIT
