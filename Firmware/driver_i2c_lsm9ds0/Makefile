@@ -59,6 +59,6 @@ $(EXE): $(OBJ) $(MAIN_OBJ)
 	$(Q)g++ $(INC) $(CFLAGS) -c $< -o $@
    
 clean:
-	$(Q)rm -rf $(OBJ) $(EXE) $(SWG_SRC)
+	$(Q)rm -rf $(OBJ) $(EXE) $(SWG_SRC) __pycache__
 	
 	
