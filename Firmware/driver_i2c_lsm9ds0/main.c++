@@ -22,11 +22,25 @@
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-#include "RTIMULib.h"
+#include <iostream>
+#include "lsm9ds0_yann.h"
+
 
 int main()
 {
-    int sampleCount = 0;
+	 double r,p,y;
+	 
+	 LSM9DS0 a = LSM9DS0();
+	 
+	 for (int i=0; i<100; i++) {
+		
+    	a.read(&r, &p, &y);
+	 
+	   std::cout << "r,p,y : " << r << "," << p << y << std::endl;
+	 }
+	 
+	 /*
+	 int sampleCount = 0;
     int sampleRate = 0;
     uint64_t rateTimer;
     uint64_t displayTimer;
@@ -121,6 +135,6 @@ int main()
                 rateTimer = now;
             }
         }
-    }
+    }*/
 }
 

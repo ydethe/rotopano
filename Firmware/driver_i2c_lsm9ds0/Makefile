@@ -22,11 +22,18 @@ endif
 
 default: $(EXE) $(DLL)
 
-test: $(EXE)
+test: test_exe test_py
+
+test_py: $(DLL)
 	$(Q)echo $(OBJ)
 	$(Q)echo Lancement du test
-	$(Q)sudo ./$<
-
+	$(Q)python test.py
+	
+test_exe: $(EXE)
+	$(Q)echo $(OBJ)
+	$(Q)echo Lancement du test
+	$(Q)./$<
+	
 $(DLL): $(OBJ)
 	$(Q)echo Edition de liens...
 	$(Q)g++ $(LDFLAGS) -shared -o $@ $^ -lpigpio -lpthread -lRTIMULib
