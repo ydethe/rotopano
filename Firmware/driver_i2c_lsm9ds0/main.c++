@@ -28,15 +28,15 @@
 
 int main()
 {
-	 double r,p,y;
-	 
+	 std::vector<double> att;
+	 	 
 	 LSM9DS0 a = LSM9DS0();
 	 
 	 for (int i=0; i<100; i++) {
 		
-    	a.read(&r, &p, &y);
+    	att = a.read();
 	 
-	   std::cout << "r,p,y : " << r << "," << p << y << std::endl;
+	   std::cout << "r,p,y : " << att[0] << "," << att[1] << "," << att[2] << std::endl;
 	 }
 	 
 	 /*
