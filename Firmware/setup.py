@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
 
 #============================================================
 #TUTO
@@ -9,7 +9,14 @@ from setuptools import setup, find_packages
 # notez qu'on import la lib
 # donc assurez-vous que l'importe n'a pas d'effet de bord
 import RPFirmware
- 
+
+# extension = Extension("imu_driver", ["RPFirmware/lsm9ds0_yann.cpp", "RPFirmware/imu_driver_wrap.cpp"])
+myext = Extension( "imu_driver",
+    sources = ["RPFirmware/lsm9ds0_yann.cpp", "RPFirmware/imu_driver.i"],
+    swig_opts=["-py3", "-c++"],
+    libraries=["RTIMULib"],
+	 )
+	 
 # Ceci n'est qu'un appel de fonction. Mais il est trèèèèèèèèèèès long
 # et il comporte beaucoup de paramètres
 setup(
@@ -19,7 +26,9 @@ setup(
  
    # la version du code
    version=RPFirmware.__version__,
- 
+   
+	ext_modules=[extension],
+	
    # Liste les packages à insérer dans la distribution
    # plutôt que de le faire à la main, on utilise la foncton
    # find_packages() de setuptools qui va cherche tous les packages
