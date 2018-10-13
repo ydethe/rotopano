@@ -1,7 +1,7 @@
 import time
 
 import numpy as np
-from .LSM9DS0 import LSM9DS0
+from .imu_driver import LSM9DS0
 from libSystemControl.Sensors import ASensors
 
 
@@ -14,8 +14,8 @@ class IMU (ASensors):
         
     def behavior(self, x, u, t):
         data = self._imu.read()
-        gyr,mag,acc = data
-        res = np.array([gyr[0],gyr[1],gyr[2],acc[0],acc[1],acc[2],mag[0],mag[1],mag[2]])
+        gyr,mag,acc = data.gyr,data.mag,data.acc
+        res = np.array([gyr.x,gyr.y,gyr.z,acc.x,acc.y,acc.z,mag.x,mag.y,mag.z])
 
         return res
 
