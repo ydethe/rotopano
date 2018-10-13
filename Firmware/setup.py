@@ -99,8 +99,8 @@ setup(
    # # créé automatiquement. 
    # # La syntaxe est "nom-de-commande-a-creer = package.module:fonction".
    entry_points = {
-       'rotopano': [
-           'rotopano = RPFirmware.main:main',
+       'console_scripts': [
+           'rotopano = RPFirmware.__main__:main',
        ],
    },
  
