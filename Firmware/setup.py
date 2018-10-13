@@ -11,7 +11,7 @@ from setuptools import setup, find_packages, Extension
 import RPFirmware
 
 # extension = Extension("imu_driver", ["RPFirmware/lsm9ds0_yann.cpp", "RPFirmware/imu_driver_wrap.cpp"])
-myext = Extension( "imu_driver",
+extension = Extension( "imu_driver",
     sources = ["RPFirmware/lsm9ds0_yann.cpp", "RPFirmware/imu_driver.i"],
     swig_opts=["-py3", "-c++"],
     libraries=["RTIMULib"],
