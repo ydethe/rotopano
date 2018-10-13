@@ -27,7 +27,7 @@ test: test_exe test_py
 test_py: $(DLL)
 	$(Q)echo $(OBJ)
 	$(Q)echo Lancement du test
-	$(Q)python test.py
+	$(Q)python test.py 1000
 	
 test_exe: $(EXE)
 	$(Q)echo $(OBJ)

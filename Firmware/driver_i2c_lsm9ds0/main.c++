@@ -28,15 +28,15 @@
 
 int main()
 {
-	 std::vector<double> att;
+	 imu_data_t imuData;
 	 	 
 	 LSM9DS0 a = LSM9DS0();
 	 
 	 for (int i=0; i<100; i++) {
 		
-    	att = a.read();
+    	imuData = a.read();
 	 
-	   std::cout << "r,p,y : " << att[0] << "," << att[1] << "," << att[2] << std::endl;
+	   std::cout << "r,p,y : " << imuData.roll << "," << imuData.pitch << "," << imuData.yaw << std::endl;
 	 }
 	 
 	 /*

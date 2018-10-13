@@ -32,17 +32,33 @@ LSM9DS0::LSM9DS0() {
  LSM9DS0::~LSM9DS0() {
  }
 
-std::vector<double> LSM9DS0::read() {
-	toReturn = std::vector<double>(3);
-	
-	imu->IMURead();
+imu_data_t LSM9DS0::read() {
+   imu->IMURead();
 	RTIMU_DATA imuData = imu->getIMUData();
+	imu_data_t res;
 	
-	toReturn[0] = imuData.fusionPose.x();
-	toReturn[1] = imuData.fusionPose.y();
-	toReturn[2] = imuData.fusionPose.z();
+	res.gyr.x = imuData.gyro.x();
+	res.gyr.y = imuData.gyro.y();
+	res.gyr.z = imuData.gyro.z();
 	
-	return toReturn;
+	res.acc.x = imuData.accel.x();
+	res.acc.y = imuData.accel.y();
+	res.acc.z = imuData.accel.z();
+	
+	res.mag.x = imuData.compass.x();
+	res.mag.y = imuData.compass.y();
+	res.mag.z = imuData.compass.z();
+	
+	res.roll = imuData.fusionPose.x();
+	res.pitch = imuData.fusionPose.y();
+	res.yaw = imuData.fusionPose.z();
+	
+	res.qx = imuData.fusionQPose.x();
+	res.qy = imuData.fusionQPose.y();
+	res.qz = imuData.fusionQPose.z();
+	res.qw = imuData.fusionQPose.scalar();
+	
+	return res;
 	
 }
 

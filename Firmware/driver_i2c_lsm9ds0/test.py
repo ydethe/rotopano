@@ -9,9 +9,8 @@ log = open('data.txt', 'w')
 
 log.write("%f\n" % time.time())
 for _ in range(int(sys.argv[1])):
-  r,p,y = a.read()
-  print(r,p,y)
-  log.write("%f,%f,%f\n" % (r,p,y))
+  att = a.read()
+  log.write("%f,%f,%f\n" % (att.roll,att.pitch,att.yaw))
   
 log.write("%f\n" % time.time())
 log.close()
