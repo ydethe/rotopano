@@ -1,2 +1,4 @@
 include *.md
 recursive-include RPFirmware *.jpg
+recursive-include RPFirmware *.ini
+
