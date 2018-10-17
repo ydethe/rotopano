@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}Panorama{% endblock %}
+
+{% block block_contenu %}
+
+<form action="/panorama" method="POST">
+   <div class="form-group">
+      <label for="pano_mode">Choose panorama mode</label>
+      <select class="form-control" name="pano_mode" id="pano_mode">
+         {% for pm in pano_modes %}
+         <option>{{ pm }}</option>
+         {% endfor %}
+      </select>
+   </div>
+   <div class="form-group">
+      <label for="pano_interval">Time between 2 photos (s)</label>
+      <input type="number" class="form-control" name="pano_interval" id="pano_interval" placeholder={{ pano_interval }}>
+   </div>
+   <button type="submit" class="btn btn-primary">Launch</button>
+</form>
+
+{% endblock %}
+

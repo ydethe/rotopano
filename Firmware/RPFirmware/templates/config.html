@@ -1,66 +1,20 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    -->
-    
-    <title>Rotopano</title>
+{% extends "layout.html" %}
 
-    <!-- Bootstrap core CSS -->
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+{% block title %}Configuration{% endblock %}
 
- </head>
+{% block block_contenu %}
 
-  <body>
+<form action="/config" method="POST">
+   <div class="form-group">
+      <label for="vert_fov">Vertical FOV (deg)</label>
+      <input type="number" class="form-control" name="vert_fov" id="vert_fov" placeholder={{ vert_fov }}>
+   </div>
+   <div class="form-group">
+      <label for="horz_fov">Horizontal FOV (deg)</label>
+      <input type="number" class="form-control" name="horz_fov" id="horz_fov" placeholder={{ horz_fov }}>
+   </div>
+   <button type="submit" class="btn btn-primary">Save</button>
+</form>
 
-    <header>
-      <!-- Fixed navbar -->
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="#">Rotopano</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/control">Control</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/config">Config<span class="sr-only">(current)</span></a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
-
-    <!-- Begin page content -->
-    <main role="main" class="container">
-      <h1 class="mt-5">Configuration</h1>
-    </main>
-    
-    <form action="/config" method="POST">
-        <div class="form-group">
-            <label for="exampleInputEmail1">Email</label>
-            <input type="email" class="form-control" name="email" id="exampleInputEmail1" placeholder="Enter email">
-        </div>
-        <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-    </form>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/popper.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-  </body>
-</html>
-
-
+{% endblock %}
 

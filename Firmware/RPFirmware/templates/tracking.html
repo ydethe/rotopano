@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}Tracking{% endblock %}
+
+{% block block_contenu %}
+
+<form action="/tracking" method="POST">
+   <div class="form-group">
+      <label for="trk_body">Choose body</label>
+      <select class="form-control" name="trk_body" id="trk_body">
+         {% for cel_body in bodies %}
+         <option>{{ cel_body }}</option>
+         {% endfor %}
+      </select>
+   </div>
+   <div class="form-group">
+      <label for="trk_interval">Time between 2 photos (s)</label>
+      <input type="number" class="form-control" name="trk_interval" id="trk_interval" placeholder={{ trk_interval }}>
+   </div>
+   <div class="form-group">
+      <label for="trk_duration">Duration (s)</label>
+      <input type="number" class="form-control" name="trk_duration" id="trk_duration" placeholder={{ trk_duration }}>
+   </div>
+   <button type="submit" class="btn btn-primary">Track</button>
+</form>
+
+{% endblock %}
+
+{% block block_scripts %}
+   
+<script type="text/javascript">
+   $('#dropdown-menu').on('show.bs.dropdown', function () {
+     alert('hello');
+   })
+</script>
+
+{% endblock %}
