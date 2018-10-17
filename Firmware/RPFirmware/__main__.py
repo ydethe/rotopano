@@ -5,16 +5,7 @@ from libSystemControl.Estimator import MadgwickFilter
 from .Controller import RPController
 
 
-def main():
-   imu = IMU()
-   sys = RPSystem()
-   dt = 1./50.
-   ctl = RPController()
-   mf = MadgwickFilter(dt)
-   itf = RPInterface(dt, ctl,sys,imu,mf)
-   
-   itf.start()
-   
+
 
 if __name__ == '__main__':
    main()

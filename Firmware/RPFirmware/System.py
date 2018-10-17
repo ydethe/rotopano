@@ -1,4 +1,4 @@
-from libSystemControl.System import ASystem
+from SystemControl.System import ASystem
 
 
 class RPSystem (ASystem):

@@ -2,7 +2,7 @@ import time
 
 import numpy as np
 from .imu_driver import LSM9DS0
-from libSystemControl.Sensors import ASensors
+from SystemControl.Sensors import ASensors
 
 
 class IMU (ASensors):

@@ -67,7 +67,9 @@ setup(
         'singleton3',
         'astropy',
         'jplephem',
-    ],
+        'flask',
+        'gevent',
+        ],
  
    # Active la prise en compte du fichier MANIFEST.in
    include_package_data=True,
@@ -100,7 +102,7 @@ setup(
    # # La syntaxe est "nom-de-commande-a-creer = package.module:fonction".
    entry_points = {
        'console_scripts': [
-           'rotopano = RPFirmware.__main__:main',
+           'rotopano = RPFirmware.main:main',
        ],
    },
  

@@ -1,4 +1,4 @@
-from libSystemControl.Controller import AController
+from SystemControl.Controller import AController
 
 
 class RPController (AController):

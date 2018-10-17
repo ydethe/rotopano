@@ -3,17 +3,17 @@ from astropy.coordinates import EarthLocation
 import astropy.units as u
 import numpy as np
 
-from Config import Config
-from Tache import Tache
-from RPEphemeris import RPEphemeris
+from .Config import Config
+from .Interface import setup_interface
+from .RPEphemeris import RPEphemeris
 
 
 app = Flask(__name__)
-app.tache = Tache()
+app.tache = setup_interface()
+app.tache.start()
 
 @app.route("/")
 def default():
-   app.tache.start()
    return redirect('/panorama')
    
 @app.route("/panorama", methods=['GET', 'POST'])

@@ -1,7 +1,5 @@
 #! /bin/sh
 
 
-cd ~/Downloads/RTIMULib2/Linux/python
-CC="ccache gcc" python setup.py install 
-cd -
-python Fusion.py
+rsync -avre ssh . raspberry:rotopano/Firmware --exclude="RPFirmware/__pycache__" --exclude=".DS_Store"
+ssh raspberry ". ~/.zshrc && cd rotopano/Firmware && ./run.sh"
