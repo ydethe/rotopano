@@ -13,7 +13,7 @@ def will_it_float(s):
       
 class Config (object, metaclass=Singleton):
    def __init__(self):
-      self._data = {'trk_duration':60., 'trk_interval':1., 'vert_fov':10., 'horz_fov':10.}
+      self._data = {'trk_duration':60., 'trk_interval':1., 'vert_fov':10., 'horz_fov':10.,'pano_mode':'Horizontal panorama','pano_interval':1.}
       if os.path.exists('config.cfg'):
          f = open('config.cfg', 'r')
          self._data.update(json.load(f))
