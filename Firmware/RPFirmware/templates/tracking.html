@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}Tracking{% endblock %}
+{% block title %}Tracking{% end %}
 
 {% block block_contenu %}
 
@@ -10,7 +10,7 @@
       <select class="form-control" name="trk_body" id="trk_body">
          {% for cel_body in bodies %}
          <option>{{ cel_body }}</option>
-         {% endfor %}
+         {% end %}
       </select>
    </div>
    <div class="form-group">
@@ -24,14 +24,14 @@
    <button type="submit" class="btn btn-primary">Track</button>
 </form>
 
-{% endblock %}
+{% end %}
 
 {% block block_scripts %}
-   
+
 <script type="text/javascript">
    $('#dropdown-menu').on('show.bs.dropdown', function () {
      alert('hello');
    })
 </script>
 
-{% endblock %}
+{% end %}
