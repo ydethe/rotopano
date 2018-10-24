@@ -1,10 +1,11 @@
-from tornado.web import RequestHandler
-
-from ..Config import Config
+from .BaseHandler import BaseHandler
 
 
-class PanoramaHandler(RequestHandler):
-   def get(self):
-      cfg = Config()
-      self.render("panorama.html", pano_modes=['Photo', 'Horizontal panorama', 'Half sphere panorama'], **cfg.getDictionnary())
-      
+class PanoramaHandler(BaseHandler):
+    def get(self):
+        self.render("panorama.html", pano_modes=['Photo', 'Horizontal panorama', 'Half sphere panorama'], **self.cfg.getDictionnary())
+
+    def post(self):
+        self.cfg.setDictionnary(self.form_to_dict())
+        self.render("panorama.html", pano_modes=['Photo', 'Horizontal panorama', 'Half sphere panorama'], **self.cfg.getDictionnary())
+

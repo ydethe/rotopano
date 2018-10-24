@@ -1,23 +1,19 @@
-from tornado.web import RequestHandler
-from tornado.escape import json_decode
-
 from astropy.coordinates import EarthLocation
 import astropy.units as u
 import numpy as np
 
-from ..Config import Config
+from .BaseHandler import BaseHandler
 from ..RPEphemeris import RPEphemeris
 
 
-class TrackingHandler(RequestHandler):
+class TrackingHandler(BaseHandler):
    def get(self):
-      cfg = Config()
-      self.render("tracking.html", bodies=RPEphemeris.listBodies(), **cfg.getDictionnary())
+      self.render("tracking.html", coor="", bodies=RPEphemeris.listBodies(), **self.cfg.getDictionnary())
 
    def post(self):
-      cfg = Config()
-      cfg.setDictionnary(self.request.arguments)
+      self.cfg.setDictionnary(self.form_to_dict())
       eph = RPEphemeris()
-      bdy = eph.getBody(cfg.getParam('trk_body'))
+      bdy = eph.getBody(self.cfg.getParam('trk_body'))
       alt, az, d = eph.getAltAz(bdy, EarthLocation(lat=48.829456*u.deg, lon=2.302180*u.deg, height=0*u.m))
-      print("%s : Alt=%.1fdeg, az=%.1fdeg, d=%.1fkm" % (cfg.getParam('trk_body'), alt*180/np.pi,az*180/np.pi,d/1000))
+      coor = "%s : Alt=%.1fdeg, az=%.1fdeg, d=%.1fkm" % (self.cfg.getParam('trk_body'), alt*180/np.pi,az*180/np.pi,d/1000)
+      self.render("tracking.html", coor=coor, bodies=RPEphemeris.listBodies(), **self.cfg.getDictionnary())

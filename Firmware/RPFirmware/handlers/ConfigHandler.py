@@ -1,13 +1,10 @@
-from tornado.web import RequestHandler
-
-from ..Config import Config
+from .BaseHandler import BaseHandler
 
 
-class ConfigHandler(RequestHandler):
-   def get(self):
-      cfg = Config()
-      self.render("config.html", **cfg.getDictionnary())
+class ConfigHandler(BaseHandler):
+    def get(self):
+        self.render("config.html", **self.cfg.getDictionnary())
 
     def post(self):
-        cfg = Config()
-        cfg.setDictionnary(self.request.arguments)
+        self.cfg.setDictionnary(self.form_to_dict())
+        self.redirect("/panorama")
