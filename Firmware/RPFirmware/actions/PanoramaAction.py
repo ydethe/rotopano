@@ -17,5 +17,6 @@ class PanoramaAction (BaseAction):
 
     def loop(self):
         self.counter.value += 1
+        print(self.counter.value)
         time.sleep(1)
         

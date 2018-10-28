@@ -25,13 +25,15 @@
   aria-valuenow="{{test}}" aria-valuemin="0" aria-valuemax="100" style="width:{{test}}%"></div>
 </div>
 
+{{test}}
+
 {% end %}
 
 {% block block_scripts %}
 
 <script type="text/javascript">
 
-<!--
+/*
 var wSocket = new WebSocket("ws://ydethe.pythonanywhere.com/ws");
 wSocket.onmessage = function (event) {
     var msg = JSON.parse(event.data);
@@ -40,7 +42,7 @@ wSocket.onmessage = function (event) {
      .attr("aria-valuenow", msg.progress)
      .text(data.progress + "%");
 }
--->
+*/
 
 </script>
 

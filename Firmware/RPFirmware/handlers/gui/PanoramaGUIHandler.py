@@ -10,7 +10,8 @@ class PanoramaGUIHandler(BaseHandler):
 
     def post(self):
         act = ActionManager().getAction('panorama')
+        act.start()
         self.cfg.setDictionnary(self.form_to_dict())
         self.render("panorama.html", test=act.counter.value, pano_modes=['Photo', 'Horizontal panorama', 'Half sphere panorama'], **self.cfg.getDictionnary())
 
-        act.start()
+        
