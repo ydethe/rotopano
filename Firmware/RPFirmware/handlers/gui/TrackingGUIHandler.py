@@ -6,7 +6,7 @@ from RPFirmware.handlers.BaseHandler import BaseHandler
 from RPFirmware.RPEphemeris import RPEphemeris
 
 
-class TrackingHandler(BaseHandler):
+class TrackingGUIHandler(BaseHandler):
    def get(self):
       self.render("tracking.html", coor="", bodies=RPEphemeris.listBodies(), **self.cfg.getDictionnary())
 

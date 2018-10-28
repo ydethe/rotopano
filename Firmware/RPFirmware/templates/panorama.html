@@ -31,6 +31,7 @@
 
 <script type="text/javascript">
 
+<!--
 var wSocket = new WebSocket("ws://ydethe.pythonanywhere.com/ws");
 wSocket.onmessage = function (event) {
     var msg = JSON.parse(event.data);
@@ -39,6 +40,7 @@ wSocket.onmessage = function (event) {
      .attr("aria-valuenow", msg.progress)
      .text(data.progress + "%");
 }
+-->
 
 </script>
 

@@ -1,7 +1,7 @@
 from RPFirmware.handlers.BaseHandler import BaseHandler
 
 
-class ConfigHandler(BaseHandler):
+class ConfigGUIHandler(BaseHandler):
     def get(self):
         self.render("config.html", **self.cfg.getDictionnary())
 
