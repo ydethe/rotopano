@@ -1,14 +1,15 @@
 from .BaseHandler import BaseHandler
-from ..actions.PanoramaAction import PanoramaAction
+from ..ActionManager import ActionManager
 
 
 class PanoramaHandler(BaseHandler):
     def get(self):
-        self.render("panorama.html", pano_modes=['Photo', 'Horizontal panorama', 'Half sphere panorama'], **self.cfg.getDictionnary())
+        act = ActionManager().getAction('panorama')
+        self.render("panorama.html", test=act.counter.value, pano_modes=['Photo', 'Horizontal panorama', 'Half sphere panorama'], **self.cfg.getDictionnary())
 
     def post(self):
+        act = ActionManager().getAction('panorama')
         self.cfg.setDictionnary(self.form_to_dict())
-        self.render("panorama.html", pano_modes=['Photo', 'Horizontal panorama', 'Half sphere panorama'], **self.cfg.getDictionnary())
+        self.render("panorama.html", test=act.counter.value, pano_modes=['Photo', 'Horizontal panorama', 'Half sphere panorama'], **self.cfg.getDictionnary())
 
-        action = PanoramaAction(self.cfg)
-
+        act.start()
