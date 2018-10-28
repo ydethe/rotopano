@@ -2,8 +2,8 @@ from astropy.coordinates import EarthLocation
 import astropy.units as u
 import numpy as np
 
-from .BaseHandler import BaseHandler
-from ..RPEphemeris import RPEphemeris
+from RPFirmware.handlers.BaseHandler import BaseHandler
+from RPFirmware.RPEphemeris import RPEphemeris
 
 
 class TrackingHandler(BaseHandler):

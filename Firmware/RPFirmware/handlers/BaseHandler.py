@@ -1,6 +1,6 @@
 from tornado.web import RequestHandler
 
-from ..Config import Config, will_it_float
+from RPFirmware.Config import Config, will_it_float
 
 
 class BaseHandler(RequestHandler):

@@ -10,3 +10,4 @@ class ActionManager (object, metaclass=Singleton):
 
     def getAction(self, name):
         return self.handlers[name]
+        

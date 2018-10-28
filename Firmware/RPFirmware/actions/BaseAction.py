@@ -16,20 +16,25 @@ class BaseAction (Process):
     def getState(self):
         return self.state.value
 
-    def _work(self):
+    def loop(self, **kwargs):
         raise NotImplementedError()
-
+        
+    def _work(self, **kwargs):
+        while True:
+            if self.getState() == BaseAction.RUNNING:
+                pass
+            elif self.getState() == BaseAction.PAUSED:
+                while self.getState() == BaseAction.PAUSED:
+                    pass
+            elif self.getState() == BaseAction.STOPPED:
+                break
+            self.loop(**kwargs)
+            
     def start(self, *kwargs):
         if self.getState() == BaseAction.STOPPED:
             Process.start(self)
             self.state.value = BaseAction.RUNNING
-
-    def stop(self):
-        if self.is_alive():
-            self.close()
-            self.join()
-        self.state.value = BaseAction.STOPPED
-
+            
     def pause(self):
         self.state.value = BaseAction.PAUSED
 

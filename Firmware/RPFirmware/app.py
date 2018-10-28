@@ -3,12 +3,10 @@ import os
 from tornado.web import url
 from tornado.wsgi import WSGIApplication
 
-from .handlers.PanoramaHandler import PanoramaHandler
-from .handlers.TrackingHandler import TrackingHandler
-from .handlers.ConfigHandler import ConfigHandler
-from .handlers.IndexHandler import IndexHandler
-from .handlers.WebsocketHandler import WSHandler
-# from .Interface import setup_interface
+from RPFirmware.handlers.gui.PanoramaHandler import PanoramaHandler
+from RPFirmware.handlers.gui.TrackingHandler import TrackingHandler
+from RPFirmware.handlers.gui.ConfigHandler import ConfigHandler
+from RPFirmware.handlers.IndexHandler import IndexHandler
 
 
 def make_app():

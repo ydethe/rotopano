@@ -1,4 +1,4 @@
-from .BaseHandler import BaseHandler
+from RPFirmware.handlers.BaseHandler import BaseHandler
 
 
 class ConfigHandler(BaseHandler):

@@ -15,15 +15,7 @@ class PanoramaAction (BaseAction):
         self.cfg = Config()
         self.counter = Value('i',0)
 
-    def _work(self):
-        for i in range(20):
-            if self.getState() == BaseAction.RUNNING:
-               pass
-            elif self.getState() == BaseAction.PAUSED:
-               while self.getState() == BaseAction.PAUSED:
-                   pass
-            elif self.getState() == BaseAction.STOPPED:
-               break
-            self.counter.value = i
-            time.sleep(1)
+    def loop(self):
+        self.counter.value += 1
+        time.sleep(1)
         

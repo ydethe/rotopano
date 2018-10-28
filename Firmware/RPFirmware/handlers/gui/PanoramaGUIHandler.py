@@ -1,6 +1,7 @@
-from .BaseHandler import BaseHandler
-from ..ActionManager import ActionManager
+from RPFirmware.handlers.BaseHandler import BaseHandler
+from RPFirmware.ActionManager import ActionManager
 
+import sys;print(sys.path)
 
 class PanoramaHandler(BaseHandler):
     def get(self):
