@@ -1,3 +1,13 @@
+<<<<<<< .mine
+from RPFirmware.handlers.BaseHandler import BaseHandler
+from RPFirmware.ActionManager import ActionManager
+
+
+class PanoramaGUIHandler(BaseHandler):
+    def get(self):
+        act = ActionManager().getAction('panorama')
+        self.render("panorama.html", test=act.counter.value, pano_modes=['Photo', 'Horizontal panorama', 'Half sphere panorama'], **self.cfg.getDictionnary())
+=======
 from RPFirmware.handlers.BaseHandler import BaseHandler
 from RPFirmware.ActionManager import ActionManager
 
@@ -14,4 +24,4 @@ class PanoramaGUIHandler(BaseHandler):
         self.cfg.setDictionnary(self.form_to_dict())
         self.render("panorama.html", test=act.counter.value, pano_modes=['Photo', 'Horizontal panorama', 'Half sphere panorama'], **self.cfg.getDictionnary())
 
-        
+        >>>>>>> .r61

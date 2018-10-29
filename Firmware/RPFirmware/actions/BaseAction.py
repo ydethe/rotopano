@@ -18,9 +18,9 @@ class BaseAction (Process):
 
     def loop(self, **kwargs):
         raise NotImplementedError()
-        
-    def _work(self, **kwargs):
-        while True:
+
+    def _work(self):
+        while self.loop(**self.kwargs):
             if self.getState() == BaseAction.RUNNING:
                 pass
             elif self.getState() == BaseAction.PAUSED:
@@ -28,16 +28,20 @@ class BaseAction (Process):
                     pass
             elif self.getState() == BaseAction.STOPPED:
                 break
-            self.loop(**kwargs)
-            
-    def start(self, *kwargs):
+        self.stop()
+
+    def start(self, **kwargs):
+        self.kwargs = kwargs
         if self.getState() == BaseAction.STOPPED:
             Process.start(self)
             self.state.value = BaseAction.RUNNING
-            
+
     def pause(self):
         self.state.value = BaseAction.PAUSED
 
     def resume(self):
         self.state.value = BaseAction.RUNNING
+    
+    def stop(self):
+        self.state.value = BaseAction.STOPPED
         

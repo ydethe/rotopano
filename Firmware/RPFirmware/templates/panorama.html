@@ -1,3 +1,64 @@
+<<<<<<< .mine
+{% extends "layout.html" %}
+
+{% block title %}Panorama{% end %}
+
+{% block block_contenu %}
+
+<label for="pano_mode">Choose panorama mode</label>
+<select class="form-control" name="pano_mode" id="pano_mode">
+ {% for pm in pano_modes %}
+ <option>{{ pm }}</option>
+ {% end %}
+</select>
+
+<label for="pano_interval">Time between 2 photos (s)</label>
+<input type="number" class="form-control" name="pano_interval" id="pano_interval" placeholder={{ pano_interval }}>
+
+<button id="lancer" class="btn btn-primary">Launch</button>
+
+ <div class="progress">
+  <div id="pano_progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+  aria-valuenow="{{test}}" aria-valuemin="0" aria-valuemax="100" style="width:{{test}}%"></div>
+</div>
+
+{{test}}
+
+{% end %}
+
+{% block block_scripts %}
+
+<script type="text/javascript">
+
+$('#lancer').on('click', function (e) {
+    pm = $("#pano_mode").val();
+    pi = $("#pano_interval").val();
+    $.ajax({
+        headers:{
+           "Accept":"application/json",
+           "Content-type":"application/x-www-form-urlencoded"
+        }, url:"/state/panorama?pano_mode=" + pm + "&pano_interval=" + pi + "&cmd=run",
+        success:function(response){
+          // var r = JSON.parse(response);
+          // $("#main").html(r.base);
+        }
+      });
+})
+
+/*
+var wSocket = new WebSocket("ws://ydethe.pythonanywhere.com/ws");
+wSocket.onmessage = function (event) {
+    var msg = JSON.parse(event.data);
+    $("#pano_progress")
+     .css("width", msg.progress + "%")
+     .attr("aria-valuenow", msg.progress)
+     .text(data.progress + "%");
+}
+*/
+
+</script>
+
+=======
 {% extends "layout.html" %}
 
 {% block title %}Panorama{% end %}
@@ -46,4 +107,5 @@ wSocket.onmessage = function (event) {
 
 </script>
 
+>>>>>>> .r61
 {% end %}
