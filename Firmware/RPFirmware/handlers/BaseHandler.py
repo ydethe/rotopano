@@ -11,10 +11,10 @@ class BaseHandler(RequestHandler):
     def form_to_dict(self):
         res  = {}
         for k in self.request.arguments.keys():
-            v = self.request.arguments[k]
-            if hasattr(v, '__iter__'):
-                v = v[0]
-            if not will_it_float(v):
+            v = self.request.arguments[k][0]
+            if will_it_float(v):
+                v = float(v)
+            else:
                 v = v.decode('utf-8')
             res[k] = v
         return res

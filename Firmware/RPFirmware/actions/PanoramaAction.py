@@ -1,9 +1,8 @@
-<<<<<<< .mine
 import time
 from multiprocessing import Value
 
-from.BaseAction import BaseAction
-from ..Config import Config
+from RPFirmware.actions.BaseAction import BaseAction
+from RPFirmware.Config import Config
 
 
 class PanoramaAction (BaseAction):
@@ -12,30 +11,27 @@ class PanoramaAction (BaseAction):
         return 'panorama'
 
     def __init__(self):
-        BaseAction.__init__(self, name='panorama')
         self.cfg = Config()
         self.counter = Value('i',0)
-
-    def loop(self, pano_mode, pano_interval):
+        BaseAction.__init__(self, name='panorama')
+        self.kwargs['pano_mode'] = 'Photo'
+        self.kwargs['pano_interval'] = 1.
+        
+    def reset(self, **kwargs):
+        self.counter.value = 0
+        
+    def loop(self):
         cont = True
         self.counter.value += 1
-        print(self.counter.value)
-        time.sleep(pano_interval)
+        print("counter", self.counter.value, flush=True)
+        print("pano_interval", self.kwargs['pano_interval'], flush=True)
+        time.sleep(self.kwargs['pano_interval'])
         if self.counter.value == 10:
-            self.counter.value = 0
             cont = False
         return cont
 
-    def getStateJSON(self):
-        res  = {}
-
-        st = self.getState()
-        if st == BaseAction.STOPPED:
-            res['state'] = 'STOPPED'
-        elif st == BaseAction.RUNNING:
-            res['state'] = 'RUNNING'
-        elif st == BaseAction.PAUSED:
-            res['state'] = 'PAUSED'
+    def getState(self):
+        res  = BaseAction.getState(self)
 
         res['avct'] = self.counter.value*10
 
@@ -45,26 +41,4 @@ class PanoramaAction (BaseAction):
 if __name__ == '__main__':
     a = PanoramaAction()
     a.start(pano_mode="Photo", pano_interval=1.)
-    =======
-import time
-from multiprocessing import Value
-
-from.BaseAction import BaseAction
-from ..Config import Config
-
-
-class PanoramaAction (BaseAction):
-    @staticmethod
-    def getName():
-        return 'panorama'
-
-    def __init__(self):
-        BaseAction.__init__(self, name='panorama')
-        self.cfg = Config()
-        self.counter = Value('i',0)
-
-    def loop(self):
-        self.counter.value += 1
-        print(self.counter.value)
-        time.sleep(1)
-        >>>>>>> .r61
+    
