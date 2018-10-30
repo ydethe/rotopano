@@ -4,36 +4,51 @@
 
 {% block block_contenu %}
 
-<form action="/gui/tracking" method="POST">
-   <div class="form-group">
-      <label for="trk_body">Choose body</label>
-      <select class="form-control" name="trk_body" id="trk_body">
-         {% for cel_body in bodies %}
-         <option>{{ cel_body }}</option>
-         {% end %}
-      </select>
-   </div>
-   <div class="form-group">
-      <label for="trk_interval">Time between 2 photos (s)</label>
-      <input type="number" class="form-control" name="trk_interval" id="trk_interval" value={{ trk_interval }}>
-   </div>
-   <div class="form-group">
-      <label for="trk_duration">Duration (s)</label>
-      <input type="number" class="form-control" name="trk_duration" id="trk_duration" value={{ trk_duration }}>
-   </div>
-   <button type="submit" class="btn btn-primary">Track</button>
-</form>
+<label for="trk_body">Choose body</label>
+<select class="form-control" name="trk_body" id="trk_body">
+{% for cel_body in bodies %}
+    <option>{{ cel_body }}</option>
+{% end %}
+</select>
 
-{{ coor }}
+<label for="trk_interval">Time between 2 photos (s)</label>
+<input type="number" class="form-control" name="trk_interval" id="trk_interval" value={{ trk_interval }}>
+
+<label for="trk_duration">Duration (s)</label>
+<input type="number" class="form-control" name="trk_duration" id="trk_duration" value={{ trk_duration }}>
+
+<button id="track_btn" class="btn btn-primary">Track</button>
+
+<span id="coord"></span>
 
 {% end %}
 
 {% block block_scripts %}
 
 <script type="text/javascript">
-   $('#dropdown-menu').on('show.bs.dropdown', function () {
-     alert('hello');
-   })
+
+$('#track_btn').on('click', function (e) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }
+
+    function showPosition(position) {
+        td = $("#trk_duration").val();
+        ti = $("#trk_interval").val();
+        tb = $("#trk_body").val();
+        $.ajax({ url: "/state?action=tracking&trk_body=" + tb + "&trk_duration=" + td + "&trk_interval=" + ti + "&cmd=start&lat=" + position.coords.latitude  +"&lon=" + position.coords.longitude, success: function(data){
+            $("#coord").text("alt=" + data.alt + "deg, az=" + data.az + "deg");
+        }, dataType: "json"});
+    }
+
+})
+
+setInterval(function(){
+    $.ajax({ url: "/state?action=tracking", success: function(data){
+        $("#coord").text("body=" + data.trk_body + ", lat=" + data.lat + " deg, lon=" + data.lon + " deg, alt=" + data.alt + " deg, az=" + data.az + " deg");
+    }, dataType: "json"});
+}, 500);
+
 </script>
 
 {% end %}

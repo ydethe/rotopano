@@ -17,17 +17,17 @@ class PanoramaAction (BaseAction):
     def reset(self):
         self.kwargs['counter'] = 0
 
-    def loop(self, kwargs):
+    def loop(self):
         cont = True
         self.kwargs['counter'] += 1
-        time.sleep(kwargs['pano_interval'])
+        time.sleep(self.kwargs['pano_interval'])
         if self.kwargs['counter'] == 10:
             cont = False
             self.reset()
         return cont
 
     def getState(self):
-        res  = BaseAction.getState(self)
+        res = BaseAction.getState(self)
 
         res['avct'] = self.kwargs['counter']*10
 

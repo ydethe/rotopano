@@ -1,12 +1,14 @@
 from singleton3 import Singleton
 
 from RPFirmware.actions.PanoramaAction import PanoramaAction
+from RPFirmware.actions.TrackingAction import TrackingAction
 
 
 class ActionManager (object, metaclass=Singleton):
     def __init__(self):
         self.handlers = {}
         self.handlers[PanoramaAction.getName()] = PanoramaAction()
+        self.handlers[TrackingAction.getName()] = TrackingAction()
 
     def getAction(self, name):
         return self.handlers[name]

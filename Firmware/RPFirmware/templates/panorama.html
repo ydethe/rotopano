@@ -14,11 +14,11 @@
 <label for="pano_interval">Time between 2 photos (s)</label>
 <input type="number" class="form-control" name="pano_interval" id="pano_interval" value={{ pano_interval }}>
 
-<button id="lancer" class="btn btn-primary">Launch</button>
+<button id="launch_btn" class="btn btn-primary">Launch</button>
 
  <div class="progress">
   <div id="pano_progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-  aria-valuenow="{{avct}}" aria-valuemin="0" aria-valuemax="100" style="width:{{avct}}%"></div>
+  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
 </div>
 
 {% end %}
@@ -27,7 +27,7 @@
 
 <script type="text/javascript">
 
-$('#lancer').on('click', function (e) {
+$('#launch_btn').on('click', function (e) {
     pm = $("#pano_mode").val();
     pi = $("#pano_interval").val();
     $.ajax({

@@ -21,7 +21,7 @@ class BaseAction (object):
         return self.activity.value
 
     def getState(self):
-        res  = {}
+        res = {}
 
         st = self.getActivity()
         if st == BaseAction.STOPPED:
@@ -31,19 +31,21 @@ class BaseAction (object):
         elif st == BaseAction.PAUSED:
             res['activity'] = 'PAUSED'
 
+        res.update(self.kwargs)
+
         return res
 
     def reset(self):
         raise NotImplementedError()
 
-    def loop(self, kwargs):
+    def loop(self):
         raise NotImplementedError()
 
     def _work(self, activity,kwargs):
         while True:
             time.sleep(1)
             if activity.value == BaseAction.RUNNING:
-                if not self.loop(kwargs):
+                if not self.loop():
                     self.stop()
             elif activity.value == BaseAction.PAUSED:
                 while activity.value == BaseAction.PAUSED:
