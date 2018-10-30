@@ -42,16 +42,15 @@ $('#lancer').on('click', function (e) {
       });
 })
 
-/*
-var wSocket = new WebSocket("ws://ydethe.pythonanywhere.com/ws");
-wSocket.onmessage = function (event) {
-    var msg = JSON.parse(event.data);
-    $("#pano_progress")
-     .css("width", msg.progress + "%")
-     .attr("aria-valuenow", msg.progress)
-     .text(data.progress + "%");
-}
-*/
+setInterval(function(){
+    $.ajax({ url: "/state?action=panorama", success: function(data){
+        $("#pano_progress")
+          .css("width", data.avct + "%")
+          .attr("aria-valuenow", data.avct)
+          .text(data.avct + "%");
+    }, dataType: "json"});
+}, 500);
+
 
 </script>
 

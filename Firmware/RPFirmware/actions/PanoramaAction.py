@@ -23,6 +23,7 @@ class PanoramaAction (BaseAction):
         time.sleep(kwargs['pano_interval'])
         if self.kwargs['counter'] == 10:
             cont = False
+            self.reset()
         return cont
 
     def getState(self):
