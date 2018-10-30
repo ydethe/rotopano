@@ -33,7 +33,7 @@ LSM9DS0::LSM9DS0() {
  }
 
 imu_data_t LSM9DS0::read() {
-   imu->IMURead();
+    imu->IMURead();
 	RTIMU_DATA imuData = imu->getIMUData();
 	imu_data_t res;
 	
@@ -60,5 +60,9 @@ imu_data_t LSM9DS0::read() {
 	
 	return res;
 	
+}
+
+int LSM9DS0::getPollInterval() {
+    return imu->IMUGetPollInterval();
 }
 

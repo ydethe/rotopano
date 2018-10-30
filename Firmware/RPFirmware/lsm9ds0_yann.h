@@ -19,6 +19,7 @@ public:
     ~LSM9DS0();
 
     imu_data_t read();
+    int getPollInterval();
     	 
 private:
     RTIMUSettings *settings;
