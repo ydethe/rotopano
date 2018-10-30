@@ -18,8 +18,8 @@
 <input type="number" class="form-control" name="trk_duration" id="trk_duration" value={{ trk_duration }}>
 
 <button id="track_btn" class="btn btn-primary">Track</button>
-
-<span id="coord"></span>
+<br>
+<textarea id="coord" rows="5" style="min-width: 100%"></textarea>
 
 {% end %}
 
@@ -27,28 +27,40 @@
 
 <script type="text/javascript">
 
+function updateCoord(txt){
+   $("#coord").text($("#coord").text() + "\n" + txt);
+   $("#coord").scrollTop($("#coord")[0].scrollHeight);
+}
+
 $('#track_btn').on('click', function (e) {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(showPosition, error);
+    } else {
+        updateCoord("Pas de GPS");
     }
 
     function showPosition(position) {
         td = $("#trk_duration").val();
         ti = $("#trk_interval").val();
         tb = $("#trk_body").val();
-        $.ajax({ url: "/state?action=tracking&trk_body=" + tb + "&trk_duration=" + td + "&trk_interval=" + ti + "&cmd=start&lat=" + position.coords.latitude  +"&lon=" + position.coords.longitude, success: function(data){
-            $("#coord").text("alt=" + data.alt + "deg, az=" + data.az + "deg");
-        }, dataType: "json"});
+        $.ajax({ url: "/state?action=tracking&trk_body=" + tb + "&trk_duration=" + td + "&trk_interval=" + ti + "&cmd=start&lat=" + position.coords.latitude  +"&lon=" + position.coords.longitude,
+           dataType: "json"});
     }
+
+    function error(err) {
+        updateCoord(`ERROR(${err.code}): ${err.message}`);
+    };
 
 })
 
 setInterval(function(){
     $.ajax({ url: "/state?action=tracking", success: function(data){
-        $("#coord").text("body=" + data.trk_body + ", lat=" + data.lat + " deg, lon=" + data.lon + " deg, alt=" + data.alt + " deg, az=" + data.az + " deg");
+        updateCoord("body=" + data.trk_body + ", lat=" + data.lat + " deg, lon=" + data.lon + " deg, alt=" + data.alt + " deg, az=" + data.az + " deg");
     }, dataType: "json"});
 }, 500);
 
 </script>
 
 {% end %}
+
+

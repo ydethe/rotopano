@@ -21,7 +21,7 @@ def make_app():
         url(r"/gui/config", ConfigGUIHandler, name='/gui/config'),
         url(r"/state", StateHandler, name='/state'),
         ],
-        # debug=True,
+        debug=True,
         template_path = os.path.join(os.path.dirname(__file__), "templates"),
         static_path = os.path.join(os.path.dirname(__file__), "static"),
     )

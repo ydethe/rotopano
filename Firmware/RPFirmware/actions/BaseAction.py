@@ -35,17 +35,17 @@ class BaseAction (object):
 
         return res
 
-    def reset(self):
+    def reset(self, kwargs):
         raise NotImplementedError()
 
-    def loop(self):
+    def loop(self, kwargs):
         raise NotImplementedError()
 
     def _work(self, activity,kwargs):
         while True:
             time.sleep(1)
             if activity.value == BaseAction.RUNNING:
-                if not self.loop():
+                if not self.loop(kwargs):
                     self.stop()
             elif activity.value == BaseAction.PAUSED:
                 while activity.value == BaseAction.PAUSED:
@@ -57,7 +57,7 @@ class BaseAction (object):
 
     def start(self, kwargs):
         self.kwargs.update(kwargs)
-        self.reset()
+        self.reset(kwargs)
         self.activity.value = BaseAction.RUNNING
 
     def pause(self):

@@ -14,6 +14,10 @@ class ActionManager (object, metaclass=Singleton):
         return self.handlers[name]
 
     def handleRequest(self, args):
+        fic = open('/home/ydethe/mysite/RPFirmware/debug.log','a')
+        fic.write("ActionManager : args=%s\n" % str(args))
+        fic.close()
+
         act_name = args.pop('action')
         act = self.getAction(act_name)
 
@@ -39,6 +43,9 @@ class ActionManager (object, metaclass=Singleton):
             raise KeyError
 
         dat = act.getState()
+        fic = open('/home/ydethe/mysite/RPFirmware/debug.log','a')
+        fic.write("ActionManager : dat=%s\n" % str(args))
+        fic.close()
 
         return dat
 
