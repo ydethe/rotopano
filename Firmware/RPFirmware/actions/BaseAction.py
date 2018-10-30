@@ -1,7 +1,8 @@
+import time
 from multiprocessing import Process, Value, Manager
 
 
-class BaseAction (Process):
+class BaseAction (object):
     STOPPED=0
     RUNNING=1
     PAUSED=2
@@ -10,15 +11,15 @@ class BaseAction (Process):
         self.activity = Value('i',BaseAction.STOPPED)
         self.kwargs = manager.dict()
         self.name = name
-        Process.__init__(self)
-        Process.start(self)
-        
+        self._proc = Process(target=self._work, args=(self.activity, self.kwargs))
+        self._proc.start()
+
     def getName(self):
         return self.name
-        
+
     def getActivity(self):
         return self.activity.value
-        
+
     def getState(self):
         res  = {}
 
@@ -29,33 +30,31 @@ class BaseAction (Process):
             res['activity'] = 'RUNNING'
         elif st == BaseAction.PAUSED:
             res['activity'] = 'PAUSED'
-        
+
         return res
-        
+
     def reset(self):
         raise NotImplementedError()
-        
-    def loop(self):
+
+    def loop(self, kwargs):
         raise NotImplementedError()
 
-    def run(self):
+    def _work(self, activity,kwargs):
         while True:
-            if self.getActivity() == BaseAction.RUNNING:
-                print("RUNNING")
-                if not self.loop():
+            time.sleep(1)
+            if activity.value == BaseAction.RUNNING:
+                if not self.loop(kwargs):
                     self.stop()
-            elif self.getActivity() == BaseAction.PAUSED:
-                print("PAUSED")
-                while self.getActivity() == BaseAction.PAUSED:
+            elif activity.value == BaseAction.PAUSED:
+                while activity.value == BaseAction.PAUSED:
                     pass
-            elif self.getActivity() == BaseAction.STOPPED:
-                print("STOPPED")
+            elif activity.value == BaseAction.STOPPED:
                 pass
             else:
-                raise KeyError(self.getActivity())
+                raise KeyError(activity.value)
 
-    def start(self, **kwargs):
-        self.kwargs = kwargs
+    def start(self, kwargs):
+        self.kwargs.update(kwargs)
         self.reset()
         self.activity.value = BaseAction.RUNNING
 
@@ -64,7 +63,6 @@ class BaseAction (Process):
 
     def resume(self):
         self.activity.value = BaseAction.RUNNING
-    
+
     def stop(self):
         self.activity.value = BaseAction.STOPPED
-        

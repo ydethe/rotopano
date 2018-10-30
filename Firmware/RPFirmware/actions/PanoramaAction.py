@@ -1,5 +1,4 @@
 import time
-from multiprocessing import Value
 
 from RPFirmware.actions.BaseAction import BaseAction
 from RPFirmware.Config import Config
@@ -11,29 +10,25 @@ class PanoramaAction (BaseAction):
         return 'panorama'
 
     def __init__(self):
-        self.cfg = Config()
-        self.counter = Value('i',0)
         BaseAction.__init__(self, name='panorama')
-        self.kwargs['pano_mode'] = 'Photo'
-        self.kwargs['pano_interval'] = 1.
-        
-    def reset(self, **kwargs):
-        self.counter.value = 0
-        
-    def loop(self):
+        self.cfg = Config()
+        self.kwargs['counter'] = 0
+
+    def reset(self):
+        self.kwargs['counter'] = 0
+
+    def loop(self, kwargs):
         cont = True
-        self.counter.value += 1
-        print("counter", self.counter.value, flush=True)
-        print("pano_interval", self.kwargs['pano_interval'], flush=True)
-        time.sleep(self.kwargs['pano_interval'])
-        if self.counter.value == 10:
+        self.kwargs['counter'] += 1
+        time.sleep(kwargs['pano_interval'])
+        if self.kwargs['counter'] == 10:
             cont = False
         return cont
 
     def getState(self):
         res  = BaseAction.getState(self)
 
-        res['avct'] = self.counter.value*10
+        res['avct'] = self.kwargs['counter']*10
 
         return res
 
@@ -41,4 +36,3 @@ class PanoramaAction (BaseAction):
 if __name__ == '__main__':
     a = PanoramaAction()
     a.start(pano_mode="Photo", pano_interval=1.)
-    
