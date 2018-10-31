@@ -10,30 +10,28 @@ class PanoramaAction (BaseAction):
         return 'panorama'
 
     def __init__(self):
-        BaseAction.__init__(self, name='panorama')
+        BaseAction.__init__(self, name=self.getName())
         self.cfg = Config()
-        self.kwargs['counter'] = 0
 
     def reset(self):
         self.kwargs['counter'] = 0
+        self.kwargs['avct'] = 0
 
-    def loop(self):
+    def loop(self, kwargs):
         cont = True
-        self.kwargs['counter'] += 1
-        time.sleep(self.kwargs['pano_interval'])
-        if self.kwargs['counter'] == 10:
+
+        fic = open('/home/ydethe/mysite/RPFirmware/debug.log','a')
+        fic.write("PanoramaAction.loop : kwargs=%s\n" % str(kwargs))
+        fic.close()
+
+        kwargs['counter'] += 1
+        kwargs['avct'] = kwargs['counter']*10
+
+        time.sleep(kwargs['pano_interval'])
+
+        if kwargs['counter'] == 10:
             cont = False
-            self.reset()
+            kwargs['counter'] = 0
+            kwargs['avct'] = 0
+
         return cont
-
-    def getState(self):
-        res = BaseAction.getState(self)
-
-        res['avct'] = self.kwargs['counter']*10
-
-        return res
-
-
-if __name__ == '__main__':
-    a = PanoramaAction()
-    a.start(pano_mode="Photo", pano_interval=1.)

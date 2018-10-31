@@ -9,13 +9,15 @@ class StateHandler(BaseHandler):
         args = self.form_to_dict()
         act = ActionManager()
 
+        aa = args['action']
+
         if not 'action' in args.keys():
             raise KeyError
 
         dat = act.handleRequest(args)
 
-        # fic = open('/home/ydethe/mysite/RPFirmware/debug.log','a')
-        # fic.write("StateHandler : dat=%s\n" % str(dat))
-        # fic.close()
+        fic = open('/home/ydethe/mysite/RPFirmware/debug.log','a')
+        fic.write("StateHandler : action=%s, dat=%s\n" % (aa, str(dat)))
+        fic.close()
 
         self.write(json.dumps(dat))

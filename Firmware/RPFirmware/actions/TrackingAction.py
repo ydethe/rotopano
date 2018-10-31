@@ -11,20 +11,14 @@ class TrackingAction (BaseAction):
         return 'tracking'
 
     def __init__(self):
-        BaseAction.__init__(self, name='tracking')
+        BaseAction.__init__(self, name=self.getName())
         self.cfg = Config()
 
-    def reset(self, kwargs):
-        fic = open('/home/ydethe/mysite/RPFirmware/debug.log','a')
-        fic.write("TrackingAction : reset\n")
-        fic.close()
-
-        kwargs['t_start'] = time.time()
-        kwargs['alt'] = 0.
-        kwargs['az'] = 0.
-        kwargs['d'] = 0.
-        kwargs['lat'] = 0.
-        kwargs['lon'] = 0.
+    def reset(self):
+        self.kwargs['t_start'] = time.time()
+        self.kwargs['alt'] = 0.
+        self.kwargs['az'] = 0.
+        self.kwargs['d'] = 0.
 
     def loop(self, kwargs):
         cont = True
@@ -46,3 +40,4 @@ class TrackingAction (BaseAction):
             cont = False
 
         return cont
+
