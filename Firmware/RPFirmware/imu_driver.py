@@ -204,6 +204,9 @@ class LSM9DS0(_object):
 
     def read(self) -> "imu_data_t":
         return _imu_driver.LSM9DS0_read(self)
+
+    def getPollInterval(self) -> "int":
+        return _imu_driver.LSM9DS0_getPollInterval(self)
 LSM9DS0_swigregister = _imu_driver.LSM9DS0_swigregister
 LSM9DS0_swigregister(LSM9DS0)
 
