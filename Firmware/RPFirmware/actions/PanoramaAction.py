@@ -16,6 +16,8 @@ class PanoramaAction (BaseAction):
     def reset(self):
         self.kwargs['counter'] = 0
         self.kwargs['avct'] = 0
+        if not 'pano_interval' in self.kwargs.keys():
+            self.kwargs['pano_interval'] = 1.
 
     def loop(self, kwargs):
         cont = True

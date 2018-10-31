@@ -14,7 +14,7 @@ def will_it_float(s):
 class Config (object, metaclass=Singleton):
    PATH=os.path.join(os.path.dirname(__file__), "config.cfg")
    def __init__(self):
-      self._data = {'trk_duration':60., 'trk_interval':1., 'vert_fov':10., 'horz_fov':10.,'pano_mode':'Horizontal panorama','pano_interval':1.}
+      self._data = {'vert_fov':10., 'horz_fov':10.}
       if os.path.exists(Config.PATH):
          f = open(Config.PATH, 'r')
          self._data.update(json.load(f))

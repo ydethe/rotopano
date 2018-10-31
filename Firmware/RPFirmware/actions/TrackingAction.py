@@ -19,6 +19,10 @@ class TrackingAction (BaseAction):
         self.kwargs['alt'] = 0.
         self.kwargs['az'] = 0.
         self.kwargs['d'] = 0.
+        if not 'trk_interval' in self.kwargs.keys():
+            self.kwargs['trk_interval'] = 1.
+        if not 'trk_duration' in self.kwargs.keys():
+            self.kwargs['trk_duration'] = 10.
 
     def loop(self, kwargs):
         cont = True
@@ -28,8 +32,7 @@ class TrackingAction (BaseAction):
         fic.close()
 
         eph = RPEphemeris()
-        bdy = eph.getBody(kwargs['trk_body'])
-        alt, az, d = eph.getAltAz(bdy, lat=kwargs['lat'], lon=kwargs['lon'], height=0)
+        alt, az, d = eph.getAltAz(name=kwargs['trk_body'], lat=kwargs['lat'], lon=kwargs['lon'], height=0)
         kwargs['alt'] = alt
         kwargs['az'] = az
         kwargs['d'] = d
