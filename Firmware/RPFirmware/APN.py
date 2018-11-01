@@ -1,10 +1,11 @@
 import time
 import os
 
+from singleton3 import Singleton
 import gphoto2 as gp
 
 
-class APN (object):
+class APN (object, metaclass=Singleton):
     def __init__(self):
         self.context = gp.gp_context_new()
         self.camera = gp.check_result(gp.gp_camera_new())

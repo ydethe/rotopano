@@ -1,6 +1,12 @@
+import time
+
 import numpy as np
+from singleton3 import Singleton
 
 import pigpio
+
+from RPFirmware.pi_settings import pan_motor, tilt_motor
+from RPFirmware.Logger import Logger
 
 
 class Motor (object):
@@ -67,6 +73,15 @@ class Motor (object):
     def getFracStep(self):
         return self._den
         
+    def turn(self, angle):
+        w = 2*np.pi/4
+        wr = self.setSpeed(w)
+        Logger().log("Vitesses : %f, %f" % (w, wr))
+        t = angle/wr
+        Logger().log("Temps tour : %f" % t)
+        time.sleep(t)
+        wr = self.setSpeed(0)
+        
     def setSpeed(self, w):
         freq = np.int(np.abs(w/(2*np.pi)*self._den*self._nstp))
         
@@ -75,8 +90,13 @@ class Motor (object):
         else:
             self.pi.write(self._dir, 1)
         
-        self.pi.set_PWM_dutycycle(self._stp, 255/2)
-        fapp = self.pi.set_PWM_frequency(self._stp, freq)
+        if w == 0:
+            self.pi.set_PWM_dutycycle(self._stp, 0)
+            fapp = 0
+        else:
+            self.pi.set_PWM_dutycycle(self._stp, 255/2)
+            fapp = self.pi.set_PWM_frequency(self._stp, freq)
+        
         if fapp == pigpio.PI_BAD_USER_GPIO:
             raise ArgumentError("PI_BAD_USER_GPIO")
         elif fapp == pigpio.PI_NOT_PERMITTED:
@@ -87,3 +107,14 @@ class Motor (object):
             else:
                 return fapp*2*np.pi/(self._den*self._nstp)
                 
+                
+class PanMotor (Motor, metaclass=Singleton):
+    def __init__(self):
+        Motor.__init__(self, **pan_motor)
+        
+class TiltMotor (Motor, metaclass=Singleton):
+    def __init__(self):
+        Motor.__init__(self, **tilt_motor)
+        
+        
+        

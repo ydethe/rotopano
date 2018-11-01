@@ -1,9 +1,13 @@
 import time
 import os
 
+import numpy as np
+
 from RPFirmware.actions.BaseAction import BaseAction
 from RPFirmware.Config import Config
 from RPFirmware.Logger import Logger
+from RPFirmware.Motor import PanMotor, TiltMotor
+from RPFirmware.APN import APN
 
 
 class PanoramaAction (BaseAction):
@@ -12,28 +16,42 @@ class PanoramaAction (BaseAction):
         return 'panorama'
 
     def __init__(self):
-        BaseAction.__init__(self, name=self.getName())
         self.cfg = Config()
-
+        self.apn = APN()
+        BaseAction.__init__(self, name=self.getName())
+        
     def reset(self):
         self.kwargs['counter'] = 0
         self.kwargs['avct'] = 0
+        d = self.cfg.getParam('sensor_hsize_mm')
+        f = self.cfg.getParam('focal_length_mm')
+        overlap = self.cfg.getParam('overlap_p100')
+        
+        stp0 = 2*np.arctan(d/(2*f))*(1 - overlap/100)
+        self.kwargs['step'] = stp0
+        self.kwargs['nb_step'] = int(np.ceil(2*np.pi/stp0))
+        
         if not 'pano_interval' in self.kwargs.keys():
             self.kwargs['pano_interval'] = 1.
-
+        
+        PanMotor().activate()
+        
     def loop(self, kwargs):
         cont = True
 
         Logger().log("PanoramaAction.loop : kwargs=%s\n" % str(kwargs))
         
         kwargs['counter'] += 1
-        kwargs['avct'] = kwargs['counter']*10
+        kwargs['avct'] = int(kwargs['counter']/self.kwargs['nb_step']*100)
 
+        PanMotor().turn(self.kwargs['step'])
+        self.apn.takePicture()
         time.sleep(kwargs['pano_interval'])
 
-        if kwargs['counter'] == 10:
+        if kwargs['counter'] == self.kwargs['nb_step']:
             cont = False
             kwargs['counter'] = 0
             kwargs['avct'] = 0
+            PanMotor().deactivate()
 
         return cont

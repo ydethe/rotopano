@@ -14,7 +14,7 @@ def will_it_float(s):
 class Config (object, metaclass=Singleton):
    PATH=os.path.join(os.path.dirname(__file__), "config.cfg")
    def __init__(self):
-      self._data = {'vert_fov':10., 'horz_fov':10.}
+      self._data = {'sensor_vsize_mm':15.6, 'sensor_hsize_mm':23.7, 'focal_length_mm':18.,'overlap_p100':20.}
       if os.path.exists(Config.PATH):
          f = open(Config.PATH, 'r')
          self._data.update(json.load(f))
@@ -24,6 +24,9 @@ class Config (object, metaclass=Singleton):
 
    def getDictionnary(self):
       return self._data.copy()
+
+   def getIterable(self):
+       return self._data.copy()
 
    def setDictionnary(self, dat):
       for key in dat.keys():

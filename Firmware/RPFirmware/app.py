@@ -31,7 +31,7 @@ def make_app():
     ActionManager()
     
     log = Logger()
-    # log.setStream(open(os.path.join(os.path.dirname(__file__), "debug.log"),'a'))
-    log.setStream(sys.stdout)
+    # log.addStream(open(os.path.join(os.path.dirname(__file__), "debug.log"),'a'))
+    # log.addStream(sys.stdout)
     
     return app
