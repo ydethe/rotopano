@@ -10,7 +10,7 @@ from RPFirmware.Logger import Logger
 
 
 class Motor (object):
-    def __init__(self, slp, m0, m1, m2, dir, stp, nstp):
+    def __init__(self, slp, m0, m1, m2, dir, stp, nstp, reduc):
         self._slp  = slp 
         self._m0   = m0  
         self._m1   = m1  
@@ -18,6 +18,7 @@ class Motor (object):
         self._dir  = dir 
         self._stp  = stp 
         self._nstp = nstp
+        self._reduc = reduc
         
         self._den = 1
         
@@ -82,7 +83,7 @@ class Motor (object):
         wr = self.setSpeed(0)
         
     def setSpeed(self, w):
-        freq = np.int(np.abs(w/(2*np.pi)*self._den*self._nstp))
+        freq = np.int(np.abs(w/(2*np.pi)*self._den*self._nstp/self._reduc))
         
         if w < 0.:
             self.pi.write(self._dir, 0)
@@ -102,9 +103,9 @@ class Motor (object):
             raise ArgumentError("PI_NOT_PERMITTED")
         else:
             if w < 0.:
-                return -fapp*2*np.pi/(self._den*self._nstp)
+                return -fapp*2*np.pi/(self._den*self._nstp)*self._reduc
             else:
-                return fapp*2*np.pi/(self._den*self._nstp)
+                return fapp*2*np.pi/(self._den*self._nstp)*self._reduc
                 
                 
 class PanMotor (Motor, metaclass=Singleton):

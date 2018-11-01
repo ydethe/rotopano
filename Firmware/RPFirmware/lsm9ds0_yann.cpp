@@ -27,6 +27,15 @@ LSM9DS0::LSM9DS0() {
     imu->setAccelEnable(true);
     imu->setCompassEnable(true);
     
+    fir_pitch = FIR();
+    fir_pitch.lowpass(32, 0.05);
+    
+    fir_roll = FIR();
+    fir_roll.lowpass(32, 0.05);
+    
+    fir_yaw = FIR();
+    fir_yaw.lowpass(32, 0.05);
+    
  }
  
  LSM9DS0::~LSM9DS0() {
@@ -49,10 +58,10 @@ imu_data_t LSM9DS0::read() {
 	res.mag.y = imuData.compass.y();
 	res.mag.z = imuData.compass.z();
 	
-	res.roll = imuData.fusionPose.x();
-	res.pitch = imuData.fusionPose.y();
-	res.yaw = imuData.fusionPose.z();
-	
+	res.roll = fir_roll.filter(imuData.fusionPose.x());
+	res.pitch = fir_pitch.filter(imuData.fusionPose.y());
+	res.yaw = fir_yaw.filter(imuData.fusionPose.z());
+    
 	res.qx = imuData.fusionQPose.x();
 	res.qy = imuData.fusionQPose.y();
 	res.qz = imuData.fusionQPose.z();

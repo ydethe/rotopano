@@ -1,6 +1,7 @@
 #include <vector>
 #include <RTIMULib.h>
 #include <RTMath.h>
+#include "FIR.h"
 
 
 typedef struct {
@@ -23,6 +24,9 @@ public:
     	 
 private:
     RTIMUSettings *settings;
-	 RTIMU *imu;
- 
+    RTIMU *imu;
+    FIR fir_roll;
+    FIR fir_pitch;
+    FIR fir_yaw;
+    
  };
