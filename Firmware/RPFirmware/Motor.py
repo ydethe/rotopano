@@ -73,10 +73,9 @@ class Motor (object):
     def getFracStep(self):
         return self._den
         
-    def turn(self, angle):
-        w = 2*np.pi/4
-        wr = self.setSpeed(w)
-        Logger().log("Vitesses : %f, %f" % (w, wr))
+    def turn(self, angle, speed=2*np.pi/20):
+        wr = self.setSpeed(speed)
+        Logger().log("Vitesses : %f, %f" % (speed, wr))
         t = angle/wr
         Logger().log("Temps tour : %f" % t)
         time.sleep(t)
