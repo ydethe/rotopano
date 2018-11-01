@@ -12,7 +12,9 @@ class Motor (object):
         self._dir  = dir 
         self._stp  = stp 
         self._nstp = nstp
-    
+        
+        self._den = 1
+        
         self.pi = pigpio.pi()
         if not self.pi.connected:
             raise SystemError("pigpio not connected")
@@ -66,7 +68,7 @@ class Motor (object):
         return self._den
         
     def setSpeed(self, w):
-        freq = np.abs(w/(2*np.pi)*self._den*self._nstp)
+        freq = np.int(np.abs(w/(2*np.pi)*self._den*self._nstp))
         
         if w < 0.:
             self.pi.write(self._dir, 0)
