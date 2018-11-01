@@ -28,16 +28,17 @@ class BaseAction (object):
 
     def _work(self, kwargs):
         while True:
-            if kwargs['activity'] == 'RUNNING':
+            a = kwargs['activity']
+            if a == 'RUNNING':
                 if not self.loop(kwargs):
                     self.stop()
-            elif kwargs['activity'] == 'PAUSED':
+            elif a == 'PAUSED':
                 while kwargs['activity'] == 'PAUSED':
                     pass
-            elif kwargs['activity'] == 'STOPPED':
+            elif a == 'STOPPED':
                 pass
             else:
-                raise KeyError(kwargs['activity'])
+                raise KeyError(a)
 
     def start(self, kwargs):
         self.kwargs.update(**kwargs)

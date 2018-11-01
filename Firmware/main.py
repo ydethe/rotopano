@@ -18,6 +18,7 @@ from RPFirmware.app import make_app
 
 application = make_app()
 
-application.listen(8888)
+application.listen(5000)
+print("Ready : listening on port 5000")
 tornado.ioloop.IOLoop.current().start()
 

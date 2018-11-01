@@ -1,3 +1,5 @@
+import os
+
 from singleton3 import Singleton
 
 import astropy.units as u
@@ -10,12 +12,12 @@ cds.enable()
 
 class RPEphemeris (object, metaclass=Singleton):
     def __init__(self):
-        self._lit_messier()
+        self._lit_messier(catalog=os.path.join(os.path.dirname(__file__), "messier.txt"))
         # solar_system_ephemeris.set('builtin')
         solar_system_ephemeris.set('de430')
         _ = self.getAltAz('mars', lat=0., lon=0., height=0.)
-
-    def _lit_messier(self, catalog='/home/ydethe/mysite/RPFirmware/messier.txt'):
+        
+    def _lit_messier(self, catalog='messier.txt'):
         self._messier = []
 
         f = open(catalog, 'r')

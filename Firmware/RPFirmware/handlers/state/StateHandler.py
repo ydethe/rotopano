@@ -1,7 +1,9 @@
+import os
 import json
 
 from RPFirmware.handlers.BaseHandler import BaseHandler
 from RPFirmware.ActionManager import ActionManager
+from RPFirmware.Logger import Logger
 
 
 class StateHandler(BaseHandler):
@@ -15,9 +17,7 @@ class StateHandler(BaseHandler):
             raise KeyError
 
         dat = act.handleRequest(args)
-
-        fic = open('/home/ydethe/mysite/RPFirmware/debug.log','a')
-        fic.write("StateHandler : action=%s, dat=%s\n" % (aa, str(dat)))
-        fic.close()
-
+        
+        Logger().log("StateHandler : action=%s, dat=%s\n" % (aa, str(dat)))
+        
         self.write(json.dumps(dat))

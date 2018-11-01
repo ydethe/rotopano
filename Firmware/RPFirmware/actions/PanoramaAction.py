@@ -1,7 +1,9 @@
 import time
+import os
 
 from RPFirmware.actions.BaseAction import BaseAction
 from RPFirmware.Config import Config
+from RPFirmware.Logger import Logger
 
 
 class PanoramaAction (BaseAction):
@@ -22,10 +24,8 @@ class PanoramaAction (BaseAction):
     def loop(self, kwargs):
         cont = True
 
-        fic = open('/home/ydethe/mysite/RPFirmware/debug.log','a')
-        fic.write("PanoramaAction.loop : kwargs=%s\n" % str(kwargs))
-        fic.close()
-
+        Logger().log("PanoramaAction.loop : kwargs=%s\n" % str(kwargs))
+        
         kwargs['counter'] += 1
         kwargs['avct'] = kwargs['counter']*10
 

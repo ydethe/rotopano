@@ -1,8 +1,10 @@
 import time
+import os
 
 from RPFirmware.actions.BaseAction import BaseAction
 from RPFirmware.Config import Config
 from RPFirmware.RPEphemeris import RPEphemeris
+from RPFirmware.Logger import Logger
 
 
 class TrackingAction (BaseAction):
@@ -27,10 +29,8 @@ class TrackingAction (BaseAction):
     def loop(self, kwargs):
         cont = True
 
-        fic = open('/home/ydethe/mysite/RPFirmware/debug.log','a')
-        fic.write("TrackingAction.loop : kwargs=%s\n" % str(kwargs))
-        fic.close()
-
+        Logger().log("TrackingAction.loop : kwargs=%s\n" % str(kwargs))
+        
         eph = RPEphemeris()
         alt, az, d = eph.getAltAz(name=kwargs['trk_body'], lat=kwargs['lat'], lon=kwargs['lon'], height=0)
         kwargs['alt'] = alt
