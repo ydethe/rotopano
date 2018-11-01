@@ -45,7 +45,9 @@ class PanoramaAction (BaseAction):
         kwargs['avct'] = int(kwargs['counter']/self.kwargs['nb_step']*100)
 
         PanMotor().turn(self.kwargs['step'])
-        self.apn.takePicture()
+        apn_path = self.apn.takePicture()
+        self.apn.downloadPicture(apn_path, 'pics/photo_%i.jpg' % kwargs['counter'])
+        
         time.sleep(kwargs['pano_interval'])
 
         if kwargs['counter'] == self.kwargs['nb_step']:
