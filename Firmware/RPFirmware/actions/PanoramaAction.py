@@ -21,6 +21,7 @@ class PanoramaAction (BaseAction):
         BaseAction.__init__(self, name=self.getName())
         
     def reset(self):
+        self.apn.connect()
         self.kwargs['counter'] = 0
         self.kwargs['avct'] = 0
         d = self.cfg.getParam('sensor_hsize_mm')
@@ -57,3 +58,6 @@ class PanoramaAction (BaseAction):
             PanMotor().deactivate()
 
         return cont
+        
+        
+        

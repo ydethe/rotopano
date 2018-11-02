@@ -4,17 +4,51 @@
 
 {% block block_contenu %}
 
-<form action="/gui/config" method="POST">
-    {% for (k,v) in params %}
-        <div class="form-group">
-            <label for="{{ k }}">{{ k }}</label>
-            <input type="number" step="any" class="form-control" name="{{ k }}" id="{{ k }}" value={{ v }}>
-        </div>
-    {% end %}
-        
-    <button type="submit" class="btn btn-primary">Save</button>
+{% for (k,v) in params %}
+    <div class="form-group">
+        <label for="{{ k }}">{{ k }}</label>
+        <input type="number" step="any" class="form-control" name="{{ k }}" id="{{ k }}" value={{ v }}>
+    </div>
+{% end %}
     
-</form>
+<button id="save_btn" class="btn btn-primary">Save</button>
+<button id="shutdown_btn" type="button" class="btn btn-danger">Shutdown</button>
+
+{% end %}
+
+{% block block_scripts %}
+
+<script type="text/javascript">
+
+$('#save_btn').on('click', function (e) {
+    pm = $("#pano_mode").val();
+    pi = $("#pano_interval").val();
+    url = "/state?action=config;
+    
+    {% for (k,v) in params %}
+    url = url + "&" + k + "=" + $("#{{ k }}").val();
+    {% end %}
+    
+    $.ajax({
+        headers:{
+           "Accept":"application/json",
+           "Content-type":"application/x-www-form-urlencoded"
+        }, url:url,
+      });
+  })
+
+$('#shutdown_btn').on('click', function (e) {
+    pm = $("#pano_mode").val();
+    pi = $("#pano_interval").val();
+    $.ajax({
+        headers:{
+           "Accept":"application/json",
+           "Content-type":"application/x-www-form-urlencoded"
+        }, url:"/state?action=shutdown",
+      });
+  })
+
+</script>
 
 {% end %}
 

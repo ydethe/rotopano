@@ -75,10 +75,12 @@ class Motor (object):
         return self._den
         
     def turn(self, angle, speed=2*np.pi/20):
+        if angle < 0:
+            speed *= -1.
         wr = self.setSpeed(speed)
-        Logger().log("Vitesses : %f, %f" % (speed, wr))
+        Logger().log("Vitesses : %f, %f\n" % (speed, wr))
         t = angle/wr
-        Logger().log("Temps tour : %f" % t)
+        Logger().log("Temps tour : %f\n" % t)
         time.sleep(t)
         wr = self.setSpeed(0)
         

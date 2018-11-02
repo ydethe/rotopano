@@ -10,19 +10,21 @@ class APN (object, metaclass=Singleton):
         self.context = gp.gp_context_new()
         self.camera = gp.check_result(gp.gp_camera_new())
         
-        while True:
+    def connect(self):
+        for _ in range(2):
             error = gp.gp_camera_init(self.camera, self.context)
             if error >= gp.GP_OK:
                 # operation completed successfully so exit loop
-                break
+                self.camera_description = gp.check_result(gp.gp_camera_get_summary(self.camera, self.context))
+                return True
             if error != gp.GP_ERROR_MODEL_NOT_FOUND:
                 # some other error we can't handle here
                 raise gp.GPhoto2Error(error)
             # no self.camera, try again in 2 seconds
-            time.sleep(2)
+            time.sleep(1)
             
-        self.camera_description = gp.check_result(gp.gp_camera_get_summary(self.camera, self.context))
-    
+        return False
+        
     def getCameraDescription(self):
         return self.camera_description
         

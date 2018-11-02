@@ -7,6 +7,7 @@
 
 import sys
 import tornado
+from tornado.options import define, options
 
 # add your project directory to the sys.path
 project_home = u'.'
@@ -14,11 +15,14 @@ if project_home not in sys.path:
     sys.path = [project_home] + sys.path
 
 from RPFirmware.app import make_app
+from RPFirmware.Logger import Logger
 
 
 application = make_app()
 
-application.listen(5000)
-print("Ready : listening on port 5000")
+define("port", default=5000, help="port to listen on")
+
+application.listen(options.port)
+Logger().log("Ready : listening on port %i\n" % options.port)
 tornado.ioloop.IOLoop.current().start()
 
