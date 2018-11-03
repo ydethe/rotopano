@@ -1,4 +1,4 @@
-from RPFirmware.GPS import GPS
+from RPFirmware.resources.GPS import GPS
 
 
 g = GPS()

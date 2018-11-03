@@ -12,7 +12,7 @@ import RPFirmware
 
 # extension = Extension("imu_driver", ["RPFirmware/lsm9ds0_yann.cpp", "RPFirmware/imu_driver_wrap.cpp"])
 extension = Extension( "imu_driver",
-    sources = ["RPFirmware/lsm9ds0_yann.cpp", "RPFirmware/imu_driver.i", "RPFirmware/FIR.cpp"],
+    sources = ["RPFirmware/resources/lsm9ds0_yann.cpp", "RPFirmware/resources/imu_driver.i", "RPFirmware/resources/FIR.cpp"],
     swig_opts=["-py3", "-c++"],
     libraries=["RTIMULib"],
 	 )

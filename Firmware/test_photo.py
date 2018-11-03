@@ -1,5 +1,5 @@
-from RPFirmware.APN import APN
-from RPFirmware.EnvoiMail import SendMail
+from RPFirmware.resources.APN import APN
+from RPFirmware.resources.EnvoiMail import SendMail
 
 
 m = APN()

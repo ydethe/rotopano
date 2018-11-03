@@ -1,14 +1,13 @@
 import time
 
 import numpy as np
-from RPFirmware.imu_driver import LSM9DS0
+from RPFirmware.resources.imu_driver import LSM9DS0
 
-from RPFirmware.Motor import Motor
-from RPFirmware.pi_settings import *
+from RPFirmware.resources.Motor import TiltMotor, PanMotor
 
 
-# m = Motor(**pan_motor)
-m = Motor(**tilt_motor)
+# m = PanMotor()
+m = TiltMotor()
 
 m.setFracStep(16)
 

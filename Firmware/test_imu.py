@@ -2,7 +2,7 @@ import time
 
 import numpy as np
 
-from RPFirmware.imu_driver import LSM9DS0
+from RPFirmware.resources.imu_driver import LSM9DS0
 
 
 a = LSM9DS0()
