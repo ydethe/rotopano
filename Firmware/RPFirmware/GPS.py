@@ -5,10 +5,6 @@ import numpy as np
 
 class GPS (object, metaclass=Singleton):
    def __init__(self):
-      # Connect to the local gpsd
-      gpsd.connect()
-      
-      # Connect somewhere else
       gpsd.connect(host="127.0.0.1", port=2947)
       
    def getTpsLatLonAlt(self, prec=10):
