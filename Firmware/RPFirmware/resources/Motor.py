@@ -5,8 +5,8 @@ from singleton3 import Singleton
 
 import pigpio
 
-from RPFirmware.pi_settings import pan_motor, tilt_motor
-from RPFirmware.Logger import Logger
+from RPFirmware.resources.pi_settings import pan_motor, tilt_motor
+from RPFirmware.Logger import logger
 
 
 class Motor (object):
@@ -78,9 +78,9 @@ class Motor (object):
         if angle < 0:
             speed *= -1.
         wr = self.setSpeed(speed)
-        Logger().log("Vitesses : %f, %f\n" % (speed, wr))
+        logger.debug("Vitesses : %f, %f\n" % (speed, wr))
         t = angle/wr
-        Logger().log("Temps tour : %f\n" % t)
+        logger.debug("Temps tour : %f\n" % t)
         time.sleep(t)
         wr = self.setSpeed(0)
         

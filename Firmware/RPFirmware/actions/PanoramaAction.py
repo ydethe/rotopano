@@ -5,7 +5,7 @@ import numpy as np
 
 from RPFirmware.actions.BaseAction import BaseAction
 from RPFirmware.Config import Config
-from RPFirmware.Logger import Logger
+from RPFirmware.Logger import logger
 from RPFirmware.Motor import PanMotor, TiltMotor
 from RPFirmware.APN import APN
 
@@ -40,7 +40,7 @@ class PanoramaAction (BaseAction):
     def loop(self, kwargs):
         cont = True
 
-        Logger().log("PanoramaAction.loop : kwargs=%s\n" % str(kwargs))
+        logger.debug("PanoramaAction.loop : kwargs=%s\n" % str(kwargs))
         
         kwargs['counter'] += 1
         kwargs['avct'] = int(kwargs['counter']/self.kwargs['nb_step']*100)

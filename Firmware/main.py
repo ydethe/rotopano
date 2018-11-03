@@ -15,7 +15,7 @@ if project_home not in sys.path:
     sys.path = [project_home] + sys.path
 
 from RPFirmware.app import make_app
-from RPFirmware.Logger import Logger
+from RPFirmware.Logger import logger
 
 
 application = make_app()
@@ -23,6 +23,6 @@ application = make_app()
 define("port", default=5000, help="port to listen on")
 
 application.listen(options.port)
-Logger().log("Ready : listening on port %i\n" % options.port)
+logger.info("Ready : listening on port %i\n" % options.port)
 tornado.ioloop.IOLoop.current().start()
 

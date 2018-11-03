@@ -12,7 +12,7 @@ from RPFirmware.handlers.gui.ConfigGUIHandler import ConfigGUIHandler
 from RPFirmware.handlers.state.StateHandler import StateHandler
 from RPFirmware.handlers.IndexHandler import IndexHandler
 
-from RPFirmware.Logger import Logger
+from RPFirmware.ResourcesManager import ResourcesManager
 
 
 def make_app():
@@ -29,9 +29,6 @@ def make_app():
     )
     
     ActionManager()
-    
-    log = Logger()
-    # log.addStream(open(os.path.join(os.path.dirname(__file__), "debug.log"),'a'))
-    # log.addStream(sys.stdout)
+    ResourcesManager()
     
     return app
