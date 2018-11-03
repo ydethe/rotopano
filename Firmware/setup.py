@@ -63,7 +63,7 @@ setup(
         'matplotlib',
         'scipy',
         'numpy',
-        'gps3',
+        'gpsd-py3',
         'singleton3',
         'astropy',
         'jplephem',

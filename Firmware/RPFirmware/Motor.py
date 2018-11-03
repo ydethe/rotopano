@@ -41,7 +41,7 @@ class Motor (object):
         self.pi.write(self._stp , 0)
         
     def activate(self):
-        self.pi.write(self._slp, 1)
+        self.pi.write(self._slp, 0)
         
     def deactivate(self):
         self.pi.write(self._slp, 0)
