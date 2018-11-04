@@ -2,8 +2,6 @@ import os
 import piexif
 from fractions import Fraction
 
-from RPFirmware.resources.GPS import GPS
-
 
 def to_deg(value, loc):
     """convert decimal coordinates into degrees, munutes and seconds tuple
@@ -62,9 +60,6 @@ def set_gps_location(file_name, lat, lng, altitude):
     piexif.insert(exif_bytes, file_name)
     
     
-g = GPS()
-t,lat,lon,alt = g.getTpsLatLonAlt()
-set_gps_location('pics/photo_1.jpg', lat,lon,alt)
 
 
 
