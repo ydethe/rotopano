@@ -14,7 +14,7 @@ class ResourcesManager (object, metaclass=Singleton):
       self.imu = LSM9DS0()
       self.eph = RPEphemeris()
       self.pan = PanMotor()
-      self.til = TiltMotor()
+      self.tilt = TiltMotor()
       
       
       

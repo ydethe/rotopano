@@ -67,8 +67,7 @@ setup(
         'singleton3',
         'astropy',
         'jplephem',
-        'flask',
-        'gevent',
+        'piexif'
         ],
  
    # Active la prise en compte du fichier MANIFEST.in
