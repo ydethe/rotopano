@@ -2,6 +2,7 @@ from singleton3 import Singleton
 
 from RPFirmware.actions.PanoramaAction import PanoramaAction
 from RPFirmware.actions.TrackingAction import TrackingAction
+from RPFirmware.actions.PlottingAction import PlottingAction
 
 
 class ActionManager (object, metaclass=Singleton):
@@ -9,6 +10,7 @@ class ActionManager (object, metaclass=Singleton):
         self.handlers = {}
         self.handlers[PanoramaAction.getName()] = PanoramaAction()
         self.handlers[TrackingAction.getName()] = TrackingAction()
+        self.handlers[PlottingAction.getName()] = PlottingAction()
 
     def getAction(self, name):
         return self.handlers[name]

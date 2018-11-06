@@ -4,8 +4,8 @@ import os
 from singleton3 import Singleton
 import gphoto2 as gp
 
-from RPFirmware.resiurces.EXIF import set_gps_location
-from RPPirmware.resources.GPS import GPS
+from RPFirmware.resources.EXIF import set_gps_location
+from RPFirmware.resources.GPS import GPS
 
 
 class APN (object, metaclass=Singleton):

@@ -6,8 +6,8 @@ import numpy as np
 from RPFirmware.actions.BaseAction import BaseAction
 from RPFirmware.Config import Config
 from RPFirmware.Logger import logger
-from RPFirmware.Motor import PanMotor, TiltMotor
-from RPFirmware.APN import APN
+from RPFirmware.resources.Motor import PanMotor, TiltMotor
+from RPFirmware.resources.APN import APN
 
 
 class PanoramaAction (BaseAction):

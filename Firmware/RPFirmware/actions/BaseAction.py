@@ -10,7 +10,7 @@ class BaseAction (object):
         self.reset()
         self._proc = Process(target=self._work, args=(self.kwargs,))
         self._proc.start()
-
+        
     def getName(self):
         return self.name
 
@@ -40,7 +40,7 @@ class BaseAction (object):
             else:
                 raise KeyError(a)
 
-    def start(self, kwargs):
+    def start(self, kwargs={}):
         self.kwargs.update(**kwargs)
         self.reset()
         self.kwargs['activity'] = 'RUNNING'
@@ -53,3 +53,7 @@ class BaseAction (object):
 
     def stop(self):
         self.kwargs['activity'] = 'STOPPED'
+        
+        
+        
+        

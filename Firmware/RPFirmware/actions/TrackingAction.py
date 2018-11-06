@@ -3,7 +3,7 @@ import os
 
 from RPFirmware.actions.BaseAction import BaseAction
 from RPFirmware.Config import Config
-from RPFirmware.RPEphemeris import RPEphemeris
+from RPFirmware.resources.RPEphemeris import RPEphemeris
 from RPFirmware.Logger import logger
 
 

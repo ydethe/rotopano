@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}Plotting{% end %}
+
+{% block block_contenu %}
+
+<div id="container" style="width:100%; height:400px;"></div>
+
+{% end %}
+
+{% block block_scripts %}
+
+<script src="/static/js/highcharts.js"></script>
+<script type="text/javascript">
+
+var myChart; // globally available
+var last_t = 0;
+
+$(function () { 
+    myChart = Highcharts.chart('container', {
+        chart: {
+            events: {
+                load: function () {
+                    // set up the updating of the chart each second
+                    var series = this.series;
+                    setInterval(function () {
+                        $.ajax({ url: "/plot/pitch?tps=" + last_t, success: function(data){
+                            var i = 0;
+                            for (i; i < data.length; i += 1) {
+                                series[0].addPoint([data.x[i],data.y[i]], false);
+                                series[1].addPoint([data.x[i],data.yf[i]], false);
+                                last_t = data.x[i];
+                            }
+                            myChart.redraw();
+                        }, dataType: "json"});
+                    }, 100);
+                }
+            }
+        },
+
+        title: {
+            text: 'IMU'
+        },
+
+        exporting: {
+            enabled: true
+        },
+
+        series: [{
+            name: 'Pitch brut',
+            data: []
+        },
+        {
+            name: 'Pitch filtré',
+            data: []
+        }]
+    });
+});
+
+</script>
+
+{% end %}
