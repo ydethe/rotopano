@@ -3,7 +3,7 @@ import os
 
 from RPFirmware.actions.BaseAction import BaseAction
 from RPFirmware.Config import Config
-from RPFirmware.resources.RPEphemeris import RPEphemeris
+from RPFirmware.ResourcesManager import ResourcesManager
 from RPFirmware.Logger import logger
 
 
@@ -15,7 +15,8 @@ class TrackingAction (BaseAction):
     def __init__(self):
         BaseAction.__init__(self, name=self.getName())
         self.cfg = Config()
-
+        self.rm = ResourcesManager()
+        
     def reset(self):
         self.kwargs['t_start'] = time.time()
         self.kwargs['alt'] = 0.
@@ -31,8 +32,7 @@ class TrackingAction (BaseAction):
 
         logger.debug("TrackingAction.loop : kwargs=%s\n" % str(kwargs))
         
-        eph = RPEphemeris()
-        alt, az, d = eph.getAltAz(name=kwargs['trk_body'], lat=kwargs['lat'], lon=kwargs['lon'], height=0)
+        alt, az, d = self.rm.eph.getAltAz(name=kwargs['trk_body'], lat=kwargs['lat'], lon=kwargs['lon'], height=0)
         kwargs['alt'] = alt
         kwargs['az'] = az
         kwargs['d'] = d

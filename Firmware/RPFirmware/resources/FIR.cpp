@@ -118,6 +118,7 @@ void FIR::setBuffer(double x, int i){
 
 
 void FIR::lowpass(int M, double f){
+	double co, pond;
 	
 	this->setTaps(M);
 
@@ -131,11 +132,13 @@ void FIR::lowpass(int M, double f){
 		int W=M/2;
 
 		for (int i=-W; i<W; i++){
+		   pond = 0.54 - 0.46*cos(M_2_PI*(W+i)/M);
 			if (i==0) {
-				this->setCoeff(2*f,W);
+			   co = 1.;
 			}else{		
-				this->setCoeff((sin(2*(M_PI)*f*i)/(i*(M_PI))),i+W);
+				co = (sin(2*(M_PI)*f*i)/(2*f*i*(M_PI)));
 			}
+			this->setCoeff(co*pond,W+i);
 		}
 	}
 }

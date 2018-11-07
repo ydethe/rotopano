@@ -6,8 +6,7 @@ import numpy as np
 from RPFirmware.actions.BaseAction import BaseAction
 from RPFirmware.Config import Config
 from RPFirmware.Logger import logger
-from RPFirmware.resources.Motor import PanMotor, TiltMotor
-from RPFirmware.resources.APN import APN
+from RPFirmware.ResourcesManager import ResourcesManager
 
 
 class PanoramaAction (BaseAction):
@@ -17,7 +16,8 @@ class PanoramaAction (BaseAction):
 
     def __init__(self):
         self.cfg = Config()
-        self.apn = APN()
+        self.rm = ResourcesManager()
+        self.apn = self.rm.apn
         BaseAction.__init__(self, name=self.getName())
         
     def reset(self):
@@ -35,7 +35,7 @@ class PanoramaAction (BaseAction):
         if not 'pano_interval' in self.kwargs.keys():
             self.kwargs['pano_interval'] = 1.
         
-        PanMotor().activate()
+        self.rm.pan.activate()
         
     def loop(self, kwargs):
         cont = True
@@ -45,7 +45,7 @@ class PanoramaAction (BaseAction):
         kwargs['counter'] += 1
         kwargs['avct'] = int(kwargs['counter']/self.kwargs['nb_step']*100)
 
-        PanMotor().turn(self.kwargs['step'], speed=2*np.pi/10.)
+        self.rm.pan.turn(self.kwargs['step'], speed=2*np.pi/10.)
         apn_path = self.apn.takePicture()
         self.apn.downloadPicture(apn_path, 'pics/photo_%i.jpg' % kwargs['counter'])
         
@@ -55,7 +55,7 @@ class PanoramaAction (BaseAction):
             cont = False
             kwargs['counter'] = 0
             kwargs['avct'] = 0
-            PanMotor().deactivate()
+            self.rm.pan.deactivate()
 
         return cont
         

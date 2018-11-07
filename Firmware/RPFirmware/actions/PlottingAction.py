@@ -2,7 +2,7 @@ import time
 import os
 
 from RPFirmware.actions.BaseAction import BaseAction
-from RPFirmware.resources.IMU import IMU
+from RPFirmware.ResourcesManager import ResourcesManager
 from RPFirmware.Logger import logger
 
 
@@ -12,11 +12,12 @@ class PlottingAction (BaseAction):
         return 'plotting'
 
     def __init__(self):
+        self.rm = ResourcesManager()
         BaseAction.__init__(self, name=self.getName())
         
     def reset(self):
         self.kwargs['t_start'] = time.time()
-        self.imu = IMU()
+        self.imu = self.rm.imu
         
     def loop(self, kwargs):
         cont = True

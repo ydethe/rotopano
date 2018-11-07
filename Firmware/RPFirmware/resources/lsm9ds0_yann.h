@@ -5,13 +5,14 @@
 
 
 typedef struct {
-	double x, y, z;
+   double x,y,z;
 } imu_vector_t;
 
 typedef struct {
 	imu_vector_t acc, gyr, mag;
 	double qw, qx, qy, qz;
 	double roll, pitch, yaw;
+	double raw_roll, raw_pitch, raw_yaw;
 } imu_data_t;
 
 class LSM9DS0 {

@@ -174,6 +174,18 @@ class imu_data_t(_object):
     __swig_getmethods__["yaw"] = _imu_driver.imu_data_t_yaw_get
     if _newclass:
         yaw = _swig_property(_imu_driver.imu_data_t_yaw_get, _imu_driver.imu_data_t_yaw_set)
+    __swig_setmethods__["raw_roll"] = _imu_driver.imu_data_t_raw_roll_set
+    __swig_getmethods__["raw_roll"] = _imu_driver.imu_data_t_raw_roll_get
+    if _newclass:
+        raw_roll = _swig_property(_imu_driver.imu_data_t_raw_roll_get, _imu_driver.imu_data_t_raw_roll_set)
+    __swig_setmethods__["raw_pitch"] = _imu_driver.imu_data_t_raw_pitch_set
+    __swig_getmethods__["raw_pitch"] = _imu_driver.imu_data_t_raw_pitch_get
+    if _newclass:
+        raw_pitch = _swig_property(_imu_driver.imu_data_t_raw_pitch_get, _imu_driver.imu_data_t_raw_pitch_set)
+    __swig_setmethods__["raw_yaw"] = _imu_driver.imu_data_t_raw_yaw_set
+    __swig_getmethods__["raw_yaw"] = _imu_driver.imu_data_t_raw_yaw_get
+    if _newclass:
+        raw_yaw = _swig_property(_imu_driver.imu_data_t_raw_yaw_get, _imu_driver.imu_data_t_raw_yaw_set)
 
     def __init__(self):
         this = _imu_driver.new_imu_data_t()
