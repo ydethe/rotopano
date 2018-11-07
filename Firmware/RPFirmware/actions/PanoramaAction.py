@@ -19,6 +19,7 @@ class PanoramaAction (BaseAction):
         self.rm = ResourcesManager()
         self.apn = self.rm.apn
         BaseAction.__init__(self, name=self.getName())
+        self.reset()
         
     def reset(self):
         self.apn.connect()

@@ -6,26 +6,23 @@
 # The below has been auto-generated for your Flask project
 
 import sys
+
+import begin
 import tornado
-from tornado.options import define, options
 
 
-if __name__ == '__main__':
+@begin.start(auto_convert=True)
+def main(port: 'port' = 5000):
    # add your project directory to the sys.path
    project_home = u'.'
    if project_home not in sys.path:
        sys.path = [project_home] + sys.path
    
    from RPFirmware.app import make_app
-   # from RPFirmware.test_imu import make_app
    from RPFirmware.Logger import logger
    
-   
    application = make_app()
-   
-   define("port", default=5000, help="port to listen on")
-   
-   application.listen(options.port)
-   logger.info("Ready : listening on port %i\n" % options.port)
+   application.listen(port)
+   logger.info("Ready : listening on port %i\n" % port)
    tornado.ioloop.IOLoop.current().start()
 

@@ -33,23 +33,11 @@ function updateCoord(txt){
 }
 
 $('#track_btn').on('click', function (e) {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, error);
-    } else {
-        updateCoord("Pas de GPS");
-    }
-
-    function showPosition(position) {
-        td = $("#trk_duration").val();
-        ti = $("#trk_interval").val();
-        tb = $("#trk_body").val();
-        $.ajax({ url: "/state?action=tracking&trk_body=" + tb + "&trk_duration=" + td + "&trk_interval=" + ti + "&cmd=start&lat=" + position.coords.latitude  +"&lon=" + position.coords.longitude,
-           dataType: "json"});
-    }
-
-    function error(err) {
-        updateCoord(`ERROR(${err.code}): ${err.message}`);
-    };
+   td = $("#trk_duration").val();
+   ti = $("#trk_interval").val();
+   tb = $("#trk_body").val();
+   $.ajax({ url: "/state?action=tracking&trk_body=" + tb + "&trk_duration=" + td + "&trk_interval=" + ti + "&cmd=start",
+      dataType: "json"});
 
 })
 

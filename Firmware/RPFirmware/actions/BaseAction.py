@@ -7,7 +7,6 @@ class BaseAction (object):
         self.kwargs = manager.dict()
         self.kwargs['activity'] = 'STOPPED'
         self.name = name
-        self.reset()
         self._proc = Process(target=self._work, args=(self.kwargs,))
         self._proc.start()
         

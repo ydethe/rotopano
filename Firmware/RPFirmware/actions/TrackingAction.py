@@ -13,15 +13,22 @@ class TrackingAction (BaseAction):
         return 'tracking'
 
     def __init__(self):
-        BaseAction.__init__(self, name=self.getName())
         self.cfg = Config()
         self.rm = ResourcesManager()
+        BaseAction.__init__(self, name=self.getName())
+        self.reset()
         
     def reset(self):
         self.kwargs['t_start'] = time.time()
+        
         self.kwargs['alt'] = 0.
         self.kwargs['az'] = 0.
         self.kwargs['d'] = 0.
+        
+        self.kwargs['lat'] = 0.
+        self.kwargs['lon'] = 0.
+        self.kwargs['alt'] = 0.
+        
         if not 'trk_interval' in self.kwargs.keys():
             self.kwargs['trk_interval'] = 1.
         if not 'trk_duration' in self.kwargs.keys():
@@ -32,11 +39,17 @@ class TrackingAction (BaseAction):
 
         logger.debug("TrackingAction.loop : kwargs=%s\n" % str(kwargs))
         
-        alt, az, d = self.rm.eph.getAltAz(name=kwargs['trk_body'], lat=kwargs['lat'], lon=kwargs['lon'], height=0)
+        tps,lat,lon,alt = ResourcesManager().gps.getTpsLatLonAlt()
+        logger.debug("TrackingAction.loop : GPS=%f,%f,%f\n" % (lat,lon,alt))
+        
+        alt, az, d = ResourcesManager().eph.getAltAz(name=kwargs['trk_body'], lat=lat, lon=lon, height=alt)
         kwargs['alt'] = alt
         kwargs['az'] = az
         kwargs['d'] = d
-
+        kwargs['lat'] = lat
+        kwargs['lon'] = lon
+        kwargs['alt'] = alt
+        
         time.sleep(kwargs['trk_interval'])
 
         if time.time() > kwargs['t_start'] + kwargs['trk_duration']:

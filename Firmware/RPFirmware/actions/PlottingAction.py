@@ -13,11 +13,12 @@ class PlottingAction (BaseAction):
 
     def __init__(self):
         self.rm = ResourcesManager()
+        self.imu = self.rm.imu
         BaseAction.__init__(self, name=self.getName())
+        self.reset()
         
     def reset(self):
         self.kwargs['t_start'] = time.time()
-        self.imu = self.rm.imu
         
     def loop(self, kwargs):
         cont = True
