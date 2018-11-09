@@ -1,0 +1,5 @@
+import pigpio
+
+
+pigpio.pi()
+

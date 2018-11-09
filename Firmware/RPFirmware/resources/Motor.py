@@ -41,7 +41,7 @@ class Motor (object):
         self.pi.write(self._stp , 0)
         
     def activate(self):
-        self.pi.write(self._slp, 0)
+        self.pi.write(self._slp, 1)
         
     def deactivate(self):
         self.pi.write(self._slp, 0)
@@ -78,9 +78,9 @@ class Motor (object):
         if angle < 0:
             speed *= -1.
         wr = self.setSpeed(speed)
-        logger.debug("Vitesses : %f, %f\n" % (speed, wr))
+#         logger.debug("Vitesses : %f, %f\n" % (speed, wr))
         t = angle/wr
-        logger.debug("Temps tour : %f\n" % t)
+#         logger.debug("Temps tour : %f\n" % t)
         time.sleep(t)
         wr = self.setSpeed(0)
         
