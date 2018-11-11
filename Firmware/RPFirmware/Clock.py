@@ -42,21 +42,4 @@ class Clock (Observable):
         if self.icount == self.ncount:
             self.icount = 0
         
-        
-class Visu (Observer):
-    def __init__(self, nbeat):
-        self.nbeat = nbeat
-        
-    def handleMsg(self, msg):
-        print("Visu : ", self.nbeat, time.time(), msg)
-        
-        
-if __name__ == '__main__':
-    v1 = Visu(5)
-    v2 = Visu(6)
-    c = Clock(30)
-    c.addObserver(v1)
-    c.addObserver(v2)
-    c.start()
-    
-    
+            
