@@ -70,7 +70,11 @@ class Motor (object):
         self.pi.write(self._m2, stg[2])
         
         self._den = den
-    
+        
+        stp = 2*np.pi/self._nstp/den
+        
+        return stp
+        
     def getFracStep(self):
         return self._den
         
