@@ -4,7 +4,6 @@ import os
 from RPFirmware.actions.BaseAction import BaseAction
 from RPFirmware.Config import Config
 from RPFirmware.ResourcesManager import ResourcesManager
-from RPFirmware.Logger import logger
 
 
 class TrackingAction (BaseAction):
@@ -37,10 +36,10 @@ class TrackingAction (BaseAction):
     def loop(self, kwargs):
         cont = True
 
-        logger.debug("TrackingAction.loop : kwargs=%s\n" % str(kwargs))
+        self.rm.log.debug("TrackingAction.loop : kwargs=%s\n" % str(kwargs))
         
         tps,lat,lon,alt = ResourcesManager().gps.getTpsLatLonAlt()
-        logger.debug("TrackingAction.loop : GPS=%f,%f,%f\n" % (lat,lon,alt))
+        self.rm.log.debug("TrackingAction.loop : GPS=%f,%f,%f\n" % (lat,lon,alt))
         
         alt, az, d = ResourcesManager().eph.getAltAz(name=kwargs['trk_body'], lat=lat, lon=lon, height=alt)
         kwargs['alt'] = alt

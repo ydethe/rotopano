@@ -3,7 +3,6 @@ import os
 
 from RPFirmware.actions.BaseAction import BaseAction
 from RPFirmware.ResourcesManager import ResourcesManager
-from RPFirmware.Logger import logger
 
 
 class PlottingAction (BaseAction):

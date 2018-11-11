@@ -5,7 +5,7 @@ from singleton3 import Singleton
 from scipy.signal import firwin
 import numpy as np
 
-from RPFirmware.Logger import logger
+from RPFirmware.ResourcesManager import ResourcesManager
 
 
 class IMU (object, metaclass=Singleton):

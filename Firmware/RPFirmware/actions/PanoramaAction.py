@@ -5,7 +5,6 @@ import numpy as np
 
 from RPFirmware.actions.BaseAction import BaseAction
 from RPFirmware.Config import Config
-from RPFirmware.Logger import logger
 from RPFirmware.ResourcesManager import ResourcesManager
 
 
@@ -41,7 +40,7 @@ class PanoramaAction (BaseAction):
     def loop(self, kwargs):
         cont = True
 
-        logger.debug("PanoramaAction.loop : kwargs=%s\n" % str(kwargs))
+        self.rm.log.debug("PanoramaAction.loop : kwargs=%s\n" % str(kwargs))
         
         kwargs['counter'] += 1
         kwargs['avct'] = int(kwargs['counter']/self.kwargs['nb_step']*100)

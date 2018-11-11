@@ -6,11 +6,13 @@ from singleton3 import Singleton
 import pigpio
 
 from RPFirmware.resources.pi_settings import pan_motor, tilt_motor
-from RPFirmware.Logger import logger
+from RPFirmware.ResourcesManager import ResourcesManager
 
 
 class Motor (object):
     def __init__(self, slp, m0, m1, m2, dir, stp, nstp, reduc):
+        self.rm = ResourcesManager()
+        
         self._slp  = slp 
         self._m0   = m0  
         self._m1   = m1  
@@ -84,15 +86,15 @@ class Motor (object):
         #     n = 1
         # if n > 32:
         #     n = 32
-        # logger.debug("FracStep : %i" % n)
+        # self.rm.log.debug("FracStep : %i" % n)
         # self.setFracStep(n)
         
         if angle < 0:
             speed *= -1.
         wr = self.setSpeed(speed)
-#         logger.debug("Vitesses : %f, %f\n" % (speed, wr))
+#         self.rm.log.debug("Vitesses : %f, %f\n" % (speed, wr))
         t = angle/wr
-#         logger.debug("Temps tour : %f\n" % t)
+#         self.rm.log.debug("Temps tour : %f\n" % t)
         time.sleep(t)
         wr = self.setSpeed(0)
         
