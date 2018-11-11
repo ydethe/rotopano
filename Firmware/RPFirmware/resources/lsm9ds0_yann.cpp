@@ -57,10 +57,14 @@ imu_data_t LSM9DS0::read() {
 	res.mag.x = imuData.compass.x();
 	res.mag.y = imuData.compass.y();
 	res.mag.z = imuData.compass.z();
-	
+	/*
 	res.roll = fir_roll.filter(imuData.fusionPose.x());
 	res.pitch = fir_pitch.filter(imuData.fusionPose.y());
 	res.yaw = fir_yaw.filter(imuData.fusionPose.z());
+	*/
+	res.roll  = res.raw_roll;
+	res.pitch = res.raw_pitch;
+	res.yaw   = res.raw_yaw;
 	
 	res.raw_roll = imuData.fusionPose.x();
 	res.raw_pitch = imuData.fusionPose.y();

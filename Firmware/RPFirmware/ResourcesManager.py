@@ -7,6 +7,8 @@ from RPFirmware.resources.GPS import GPS
 from RPFirmware.resources.RPEphemeris import RPEphemeris
 from RPFirmware.resources.Motor import PanMotor, TiltMotor
 from RPFirmware.resources.IMU import IMU
+from RPFirmware.resources.Clock import Clock
+from RPFirmware.resources.Logger import logger
 
 
 class ResourcesManager (object, metaclass=Singleton):
@@ -24,6 +26,6 @@ class ResourcesManager (object, metaclass=Singleton):
       self.eph = RPEphemeris()
       self.pan = PanMotor()
       self.tilt = TiltMotor()
-      
-      
+      self.clk = Clock(5000)
+      self.log = logger
       

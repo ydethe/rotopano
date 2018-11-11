@@ -79,13 +79,13 @@ class Motor (object):
         return self._den
         
     def turn(self, angle, speed=2*np.pi/20):
-        n = 2**np.ceil(np.log2(np.abs(angle)/10.))
-        if n < 1:
-            n = 1
-        if n > 32:
-            n = 32
-        logger.debug("FracStep : %i" % n)
-        self.setFracStep(n)
+        # n = 2**np.ceil(np.log2(np.abs(angle)/10.))
+        # if n < 1:
+        #     n = 1
+        # if n > 32:
+        #     n = 32
+        # logger.debug("FracStep : %i" % n)
+        # self.setFracStep(n)
         
         if angle < 0:
             speed *= -1.
