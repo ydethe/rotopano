@@ -34,16 +34,16 @@ def plot_data(fic):
    plt.show()
    
 def gene_data():
-   from RPFirmware.resources.IMU import IMU
-   a = IMU()
+   from RPFirmware.resources.imu_driver import LSM9DS0
+   a = LSM9DS0()
    
    f = open('data.txt','w')
    
-   dt = 0.2
+   dt = 0.01
    ns = 1000
    for i in range(ns):
       dat = a.read()
-      f.write("%f,%f\n" % (i*dtdat.pitch*180/np.pi))
+      f.write("%f,%f\n" % (i*dt,dat.pitch*180/np.pi))
       time.sleep(dt)
 
    f.close()

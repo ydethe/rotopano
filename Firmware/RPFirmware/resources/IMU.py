@@ -5,8 +5,6 @@ from singleton3 import Singleton
 from scipy.signal import firwin
 import numpy as np
 
-from RPFirmware.ResourcesManager import ResourcesManager
-
 
 class IMU (object, metaclass=Singleton):
     def __init__(self, len_buf, tps_buf, pitch_buf, raw_pitch_buf):

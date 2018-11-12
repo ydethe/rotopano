@@ -6,14 +6,11 @@ from singleton3 import Singleton
 import pigpio
 
 from RPFirmware.resources.pi_settings import pan_motor, tilt_motor
-from RPFirmware.ResourcesManager import ResourcesManager
 from RPFirmware.Logger import logger
 
 
 class Motor (object):
     def __init__(self, slp, m0, m1, m2, dir, stp, nstp, reduc):
-        self.rm = ResourcesManager()
-        
         self._slp  = slp 
         self._m0   = m0  
         self._m1   = m1  
