@@ -7,6 +7,7 @@ import pigpio
 
 from RPFirmware.resources.pi_settings import pan_motor, tilt_motor
 from RPFirmware.ResourcesManager import ResourcesManager
+from RPFirmware.Logger import logger
 
 
 class Motor (object):
@@ -92,9 +93,9 @@ class Motor (object):
         if angle < 0:
             speed *= -1.
         wr = self.setSpeed(speed)
-#         self.rm.log.debug("Vitesses : %f, %f\n" % (speed, wr))
+#         logger.debug("Vitesses : %f, %f\n" % (speed, wr))
         t = angle/wr
-#         self.rm.log.debug("Temps tour : %f\n" % t)
+#         logger.debug("Temps tour : %f\n" % t)
         time.sleep(t)
         wr = self.setSpeed(0)
         

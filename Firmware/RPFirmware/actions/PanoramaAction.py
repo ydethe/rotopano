@@ -40,7 +40,7 @@ class PanoramaAction (BaseAction):
     def loop(self, kwargs):
         cont = True
 
-        self.rm.log.debug("PanoramaAction.loop : kwargs=%s\n" % str(kwargs))
+        logger.debug("PanoramaAction.loop : kwargs=%s\n" % str(kwargs))
         
         kwargs['counter'] += 1
         kwargs['avct'] = int(kwargs['counter']/self.kwargs['nb_step']*100)

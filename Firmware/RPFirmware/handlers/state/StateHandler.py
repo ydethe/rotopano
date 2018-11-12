@@ -4,6 +4,7 @@ import json
 from RPFirmware.handlers.BaseHandler import BaseHandler
 from RPFirmware.ActionManager import ActionManager
 from RPFirmware.ResourcesManager import ResourcesManager
+from RPFirmware.Logger import logger
 
 
 class StateHandler(BaseHandler):
@@ -19,6 +20,6 @@ class StateHandler(BaseHandler):
 
         dat = act.handleRequest(args)
         
-        rm.log.debug("StateHandler : action=%s, dat=%s\n" % (aa, str(dat)))
+        logger.debug("StateHandler : action=%s, dat=%s\n" % (aa, str(dat)))
         
         self.write(json.dumps(dat))

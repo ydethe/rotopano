@@ -39,10 +39,12 @@ def gene_data():
    
    f = open('data.txt','w')
    
+   dt = 0.2
    ns = 1000
    for i in range(ns):
       dat = a.read()
-      f.write("%f\n" % (dat.pitch*180/np.pi))
+      f.write("%f,%f\n" % (i*dtdat.pitch*180/np.pi))
+      time.sleep(dt)
 
    f.close()
    
