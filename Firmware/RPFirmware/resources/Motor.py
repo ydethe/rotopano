@@ -87,7 +87,7 @@ class Motor (object):
         #     n = 1
         # if n > 32:
         #     n = 32
-        # self.rm.log.debug("FracStep : %i" % n)
+        # logger.debug("FracStep : %i" % n)
         # self.setFracStep(n)
         
         if angle < 0:
