@@ -13,7 +13,7 @@ class Visu (Observer):
         self.ibeat += 1
         if self.ibeat == self.nbeat:
             self.ibeat = 0
-            print("Visu : ", self.nbeat, time.time())
+            print("Visu : ", self.nbeat, time.time(), flush=True)
         
         
 if __name__ == '__main__':
