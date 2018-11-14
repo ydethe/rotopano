@@ -67,7 +67,8 @@ setup(
         'singleton3',
         'astropy',
         'jplephem',
-        'piexif'
+        'piexif',
+        'SystemControl',
         ],
  
    # Active la prise en compte du fichier MANIFEST.in
