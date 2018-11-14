@@ -1,11 +1,11 @@
 from matplotlib import pyplot as plt
 import numpy as np
 
-from TestControl.RPSimulation import RPSimulation
-from TestControl.RPController import RPController
-from TestControl.RPEstimator import RPEstimator
-from TestControl.RPSystem import RPSystem
-from TestControl.RPSensors import RPSensors
+from RPFirmware.control.RPSimulation import RPSimulation
+from RPFirmware.control.RPController import RPController
+from RPFirmware.control.RPEstimator import RPEstimator
+from RPFirmware.control.RPSystem import RPSystem
+from RPFirmware.control.RPSensors import RPSensors
 
 
 # COBYLA
@@ -42,6 +42,5 @@ log.plot('t', 'bais_vpan_est*0 - 3', axe, linestyle='--')
 axe.set_xlabel("Temps (s)")
 axe.set_ylabel("Biais (deg/s)")
 
+plt.savefig('res.png')
 plt.show()
-
-
