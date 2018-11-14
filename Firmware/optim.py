@@ -2,11 +2,11 @@ from matplotlib import pyplot as plt
 import numpy as np
 from scipy.optimize import minimize
 
-from TestControl.RPSimulation import RPSimulation
-from TestControl.RPController import RPController
-from TestControl.RPEstimator import RPEstimator
-from TestControl.RPSystem import RPSystem
-from TestControl.RPSensors import RPSensors
+from RPFirmware.control.RPSimulation import RPSimulation
+from RPFirmware.control.RPController import RPController
+from RPFirmware.control.RPEstimator import RPEstimator
+from RPFirmware.control.RPSystem import RPSystem
+from RPFirmware.control.RPSensors import RPSensors
 
 
 dt = 0.01
@@ -40,11 +40,27 @@ def cout(X):
     print("P,I,J", P,I,J)
     
     return J
+    
+def cmde_tilt_1(X):
+    P,I = X
+    log = simu(P,I)
+    
+    u = log.getValue('cmd_tilt')
+    
+    return np.pi/2-np.max(u)
 
-# meth = 'COBYLA'
-meth = 'TNC'    
-res = minimize(cout, np.array([18.69142075,2.14647941]), method=meth)
-res = minimize(cout, res.x, method=meth)
+def cmde_tilt_2(X):
+    P,I = X
+    log = simu(P,I)
+    
+    u = log.getValue('cmd_tilt')
+    
+    return np.min(u)+np.pi/2
+
+meth = 'COBYLA'
+# meth = 'TNC'    
+res = minimize(cout, np.array([18.69142075,2.14647941]), constraints=[{'type':'ineq','fun':cmde_tilt_1},{'type':'ineq','fun':cmde_tilt_2}], method=meth)
+# res = minismize(cout, res.x, method=meth)
 print(res)
 
 P,I = res.x

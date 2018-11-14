@@ -9,8 +9,8 @@ from RPFirmware.control.RPSensors import RPSensors
 
 
 # COBYLA
-P = 18.69142075
-I = 2.14647941
+P = 0.99646389
+I = 1.06364335
 J = 120.39401775961012
 
 dt = 0.01
@@ -33,14 +33,21 @@ log.plot('t', 'tilt*180/np.pi', axe)
 log.plot('t', 'tilt*0 + 90', axe, linestyle='--')
 axe.set_ylabel("Tilt (deg)")
    
+# axe = fig.add_subplot(212, sharex=axe)
+# axe.grid(True)
+# log.plot('t', 'bais_vpan_est*180/np.pi', axe)
+# log.plot('t', 'biais_vtilt_est*180/np.pi', axe)
+# log.plot('t', 'bais_vpan_est*0 + 1', axe, linestyle='--')
+# log.plot('t', 'bais_vpan_est*0 - 3', axe, linestyle='--')
+# axe.set_xlabel("Temps (s)")
+# axe.set_ylabel("Biais (deg/s)")
+
 axe = fig.add_subplot(212, sharex=axe)
 axe.grid(True)
-log.plot('t', 'bais_vpan_est*180/np.pi', axe)
-log.plot('t', 'biais_vtilt_est*180/np.pi', axe)
-log.plot('t', 'bais_vpan_est*0 + 1', axe, linestyle='--')
-log.plot('t', 'bais_vpan_est*0 - 3', axe, linestyle='--')
+log.plot('t', 'cmd_tilt*180/np.pi', axe)
+log.plot('t', 'cmd_pan*180/np.pi', axe)
 axe.set_xlabel("Temps (s)")
-axe.set_ylabel("Biais (deg/s)")
+axe.set_ylabel("Commande (deg/s)")
 
 plt.savefig('res.png')
 plt.show()
