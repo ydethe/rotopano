@@ -47,7 +47,7 @@ def cmde_tilt_1(X):
     
     u = log.getValue('cmd_tilt')
     
-    return np.pi/2-np.max(u)
+    return lim_cmd-np.max(u)
 
 def cmde_tilt_2(X):
     P,I = X
@@ -55,11 +55,12 @@ def cmde_tilt_2(X):
     
     u = log.getValue('cmd_tilt')
     
-    return np.min(u)+np.pi/2
+    return np.min(u)+lim_cmd
 
+lim_cmd = 2*np.pi
 meth = 'COBYLA'
 # meth = 'TNC'    
-res = minimize(cout, np.array([18.69142075,2.14647941]), constraints=[{'type':'ineq','fun':cmde_tilt_1},{'type':'ineq','fun':cmde_tilt_2}], method=meth)
+res = minimize(cout, np.array([0.99646389, 1.06364335]), constraints=[{'type':'ineq','fun':cmde_tilt_1},{'type':'ineq','fun':cmde_tilt_2}], method=meth)
 # res = minismize(cout, res.x, method=meth)
 print(res)
 

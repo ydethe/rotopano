@@ -9,8 +9,8 @@ from RPFirmware.control.RPSensors import RPSensors
 
 
 # COBYLA
-P = 0.99646389
-I = 1.06364335
+P = 4
+I = 1.26
 J = 120.39401775961012
 
 dt = 0.01
