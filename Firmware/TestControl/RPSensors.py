@@ -1,25 +1,23 @@
-from RPFirmware.resources.imu_driver import LSM9DS0
+import numpy as np
+
 from SystemControl.Sensors import ASensors
 
 
 class RPSensors (ASensors):
     def __init__(self):
-        m = np.zeros(9)
-        cov = np.zeros((9,9))
-        cov[0,0] = 5.847930521212291e-05
-        cov[1,1] = 0.00011570428296016841
-        cov[2,2] = 0.00011979610281904613
-        cov[3,3] = 8.816001654298385e-06
-        cov[4,4] = 3.7248907342466807e-06
-        cov[5,5] = 2.844231527812222e-05
-        cov[6,6] = 5.847930521212291e-05
-        cov[7,7] = 0.00011570428296016841
-        cov[8,8] = 0.00011979610281904613
-        ASensors.__init__(self, name_of_mes=['gx','gy','gz', 'ax','ay','az', 'mx','my','mz'], mean=m, cov=cov)
-        self.imu = LSM9DS0()
-        # gx,gy,gz,ax,ay,az,mx,my,mz
-
+        m = np.zeros(4)
+        m[1] = np.pi/180
+        m[3] = -3.*np.pi/180
+        cov = np.zeros((4,4))
+        cov[0,0] = 0.00161054434983
+        cov[1,1] = 0.0361459703189
+        cov[2,2] = 0.00161054434983
+        cov[3,3] = 0.0836563152247
+        ASensors.__init__(self, name_of_mes=['tilt_mes','vtilt_mes','pan_mes', 'vpan_mes'], mean=m, cov=cov)
+        
     def behavior(self, x, u, t):
-        dat = self.imu.read()
-        mes = np.array([dat.gyr.x,dat.gyr.y,dat.gyr.z, dat.acc.x,dat.acc.y,dat.acc.z, dat.mag.x,dat.mag.y,dat.mag.z])
+        pan, tilt = x
+        cmd_vpan, cmd_vtilt = u
+        mes = np.array([pan, cmd_vpan, tilt, cmd_vtilt])
         return mes
+        
