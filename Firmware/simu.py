@@ -8,13 +8,21 @@ from RPFirmware.control.RPSystem import RPSystem
 from RPFirmware.control.RPSensors import RPSensors
 
 
+fmax = 8000
+den = 8
+nstp = 200
+reduc = 0.75
+stp = 2*np.pi/(nstp*den)
+aov = 2*np.arctan(15.6/(2*200))
+lim_cmd = fmax*2*np.pi/(den*nstp)*reduc
+prec = aov / 10.
+
 # COBYLA
-P = 4
-I = 1.26
-J = 120.39401775961012
+P = 7.51209586
+I = 1.97745718
 
 dt = 0.01
-cons = np.array([np.pi/2,np.pi/2])
+cons = np.ones(2)*np.pi/18
 ctrl = RPController(dt, P, I)
 sys = RPSystem()
 sensors = RPSensors()
@@ -24,23 +32,20 @@ sim = RPSimulation(cons, dt, ctrl, sys, sensors, estimator)
 sys.reset()
 sim.simulate(20.)
 log = sim.getLogger()
+t = log.getValue('t')
+
+iok = np.where(t<10)[0]
+t_cons = np.zeros(len(t))
+t_cons[iok] = cons[1]
 
 fig = plt.figure()
    
 axe = fig.add_subplot(211)
 axe.grid(True)
 log.plot('t', 'tilt*180/np.pi', axe)
-log.plot('t', 'tilt*0 + 90', axe, linestyle='--')
+axe.plot(t, t*0 + (t_cons+prec)*180/np.pi, linestyle='--', color='black', label="Tolérance")
+axe.plot(t, t*0 + (t_cons-prec)*180/np.pi, linestyle='--', color='black')
 axe.set_ylabel("Tilt (deg)")
-   
-# axe = fig.add_subplot(212, sharex=axe)
-# axe.grid(True)
-# log.plot('t', 'bais_vpan_est*180/np.pi', axe)
-# log.plot('t', 'biais_vtilt_est*180/np.pi', axe)
-# log.plot('t', 'bais_vpan_est*0 + 1', axe, linestyle='--')
-# log.plot('t', 'bais_vpan_est*0 - 3', axe, linestyle='--')
-# axe.set_xlabel("Temps (s)")
-# axe.set_ylabel("Biais (deg/s)")
 
 axe = fig.add_subplot(212, sharex=axe)
 axe.grid(True)

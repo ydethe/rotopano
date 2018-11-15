@@ -9,6 +9,8 @@ class RPSimulation (ASimulation):
         self._cons = cons
         
     def behavior(self, xest, t):
-        return self._cons
-        
+        if t < 10:
+            return self._cons
+        else:
+            return np.zeros(2)
         

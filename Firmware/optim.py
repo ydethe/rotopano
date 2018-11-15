@@ -57,15 +57,26 @@ def cmde_tilt_2(X):
     
     return np.min(u)+lim_cmd
 
-lim_cmd = 2*np.pi
+fmax = 8000
+den = 8
+nstp = 200
+reduc = 0.75
+stp = 2*np.pi/(nstp*den)
+aov = 2*np.arctan(15.6/(2*200))
+lim_cmd = fmax*2*np.pi/(den*nstp)*reduc
+prec = aov / 10.
+print("Commande max : %.3fdeg/s" % (lim_cmd*180/np.pi))
+print("Pas : %.3fdeg" % (stp*180/np.pi))
+print("AoV : %.2fdeg" % (aov*180/np.pi))
+print("Précision visée : %.2fdeg" % (prec*180/np.pi))
+
 meth = 'COBYLA'
-# meth = 'TNC'    
-res = minimize(cout, np.array([0.99646389, 1.06364335]), constraints=[{'type':'ineq','fun':cmde_tilt_1},{'type':'ineq','fun':cmde_tilt_2}], method=meth)
-# res = minismize(cout, res.x, method=meth)
+res = minimize(cout, np.array([7.51209586, 1.97745718]), constraints=[{'type':'ineq','fun':cmde_tilt_1},{'type':'ineq','fun':cmde_tilt_2}], method=meth)
 print(res)
 
 P,I = res.x
 log = simu(P,I)
+t = log.getValue('t')
 
 fig = plt.figure()
    
@@ -73,6 +84,8 @@ axe = fig.add_subplot(211)
 axe.grid(True)
 log.plot('t', 'tilt*180/np.pi', axe)
 log.plot('t', 'tilt*0 + 90', axe, linestyle='--')
+axe.plot(t, (cons[1]+prec)*180/np.pi, linestyle='--')
+axe.plot(t, (cons[1]-prec)*180/np.pi, linestyle='--')
 axe.set_ylabel("Tilt (deg)")
    
 axe = fig.add_subplot(212, sharex=axe)
