@@ -5,8 +5,8 @@ from RPFirmware.Observe import Observer
 
 
 class RPSimulation (ASimulation, Observer):
-    def __init__(self, dt, ctrl, sys, sensors, estimator):
-        ASimulation.__init__(self, dt, ctrl, sys, sensors, estimator)
+    def __init__(self, ctrl, sys, sensors, estimator):
+        ASimulation.__init__(self, ctrl, sys, sensors, estimator)
         self._cons = np.zeros(2)
 
     def setConsigne(self, cons):
@@ -34,12 +34,11 @@ def make_simulation():
     P = 7.51209586
     I = 1.97745718
 
-    dt = 0.01
-    ctrl = RPController(dt, P, I)
+    ctrl = RPController(P, I)
     sys = RPSystem()
     sensors = RPSensors()
-    estimator = RPEstimator(dt)
-    sim = RPSimulation(dt, ctrl, sys, sensors, estimator)
+    estimator = RPEstimator()
+    sim = RPSimulation(ctrl, sys, sensors, estimator)
 
     c = rm.clk
     c.addObserver(sim, freq=100.)
