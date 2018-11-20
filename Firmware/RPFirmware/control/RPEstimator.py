@@ -21,4 +21,4 @@ class RPEstimator (KalmanFilter):
         self.reset()
 
     def reset(self):
-        self.setEstimation(np.zeros(4),np.eye(4),0.)
+        self.setEstimation(np.zeros(4),np.eye(4))

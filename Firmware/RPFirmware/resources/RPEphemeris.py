@@ -12,11 +12,12 @@ cds.enable()
 
 class RPEphemeris (object, metaclass=Singleton):
     def __init__(self):
+        return
         self._lit_messier(catalog=os.path.join(os.path.dirname(__file__), "messier.txt"))
         # solar_system_ephemeris.set('builtin')
         solar_system_ephemeris.set('de430')
         _ = self.getAltAz('mars', lat=0., lon=0., height=0.)
-        
+
     def _lit_messier(self, catalog='messier.txt'):
         self._messier = []
 
@@ -91,5 +92,3 @@ class RPEphemeris (object, metaclass=Singleton):
         l = l+lm
 
         return l
-
-
