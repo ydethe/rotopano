@@ -6,27 +6,30 @@ from RPFirmware.Logger import logger
 
 
 class Visu (Observer):
-    def __init__(self, nbeat):
-        self.nbeat = nbeat
+    def __init__(self, name):
+        self.name = name
+
+    def setNbBeats(self, nbeats):
+        self.nbeat = nbeats
         self.ibeat = 0
 
     def handleMsg(self, msg):
         self.ibeat += 1
         if self.ibeat == self.nbeat:
             self.ibeat = 0
-            logger.debug("Visu : %i" % (self.nbeat,))
+            logger.debug(self.name)
 
 
 if __name__ == '__main__':
     rm = ResourcesManager()
-    v1 = Visu(2500)
-    v2 = Visu(5000)
+    v1 = Visu("v1")
+    v2 = Visu("v2")
     c = rm.clk
-    c.addObserver(v1)
-    c.addObserver(v2)
-    logger.debug("Clock started")
+    # c.addObserver(v1, freq=2.)
+    c.addObserver(v2, freq=100.)
     c.start()
+    logger.debug("Clock started")
 
     t0 = time.time()
-    while time.time()-t0 < 10:
+    while time.time()-t0 < 15 or True:
         pass
