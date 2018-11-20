@@ -1,6 +1,7 @@
-import gpsd
 from singleton3 import Singleton
 import numpy as np
+
+import RPFirmware.resources.gpsd as gpsd
 
 
 class GPS (object, metaclass=Singleton):

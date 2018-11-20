@@ -2,20 +2,21 @@ import time
 
 from RPFirmware.ResourcesManager import ResourcesManager
 from RPFirmware.Observe import Observer
+from RPFirmware.Logger import logger
 
-        
+
 class Visu (Observer):
     def __init__(self, nbeat):
         self.nbeat = nbeat
         self.ibeat = 0
-        
+
     def handleMsg(self, msg):
         self.ibeat += 1
         if self.ibeat == self.nbeat:
             self.ibeat = 0
-            print("Visu : ", self.nbeat, time.time(), flush=True)
-        
-        
+            logger.debug("Visu : %i" % (self.nbeat,))
+
+
 if __name__ == '__main__':
     rm = ResourcesManager()
     v1 = Visu(2500)
@@ -23,9 +24,9 @@ if __name__ == '__main__':
     c = rm.clk
     c.addObserver(v1)
     c.addObserver(v2)
+    logger.debug("Clock started")
     c.start()
-    
-    while True:
+
+    t0 = time.time()
+    while time.time()-t0 < 10:
         pass
-        
-        
