@@ -30,9 +30,10 @@ class RPSystem (ASystem):
         self.tilt_motor = ResourcesManager().tilt
 
     def reset(self):
-        self.setState(np.array([0.,0.]), 0.)
+        self.setState(np.array([0.,0.]))
 
-    def updateSystem(self, u, dt):
+    @ASystem.updatemethod
+    def update(self, t1 : float, t2 : float, u : np.array) -> None:
        u'''Integrates the system by one time step.
        Called at each simulation step.
 

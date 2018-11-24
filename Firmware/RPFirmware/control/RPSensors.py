@@ -14,17 +14,18 @@ class RPSensors (ASensors):
         # cov[1,1] = 0.0361459703189
         # cov[2,2] = 0.00161054434983
         # cov[3,3] = 0.0836563152247
-        ASensors.__init__(self, name_of_mes=['tilt_mes','vtilt_mes','pan_mes', 'vpan_mes'], mean=m, cov=cov)
+        ASensors.__init__(self, name_of_states=['pan_mes','vpan_mes','tilt_mes','vtilt_mes'], mean=m, cov=cov)
         self.imu = ResourcesManager().imu
 
-    def behavior(self, x, u, t):
+    @ASensors.updatemethod
+    def update(self, t1 : float, t2 : float, state : np.array) -> None:
         dat = self.imu.read()
 
-        pan = np.arctan2(dat.acc.z, dat.acc.x)
-        vpan = dat.gyr.y
+        tilt = -np.arctan2(-dat.acc.x, -dat.acc.z)
+        vtilt = dat.gyr.y
 
-        tilt = np.arctan2(dat.mag.y, dat.mag.x)
-        vtilt = dat.gyr.z
+        pan = np.arctan2(dat.mag.y, dat.mag.x)
+        vpan = -dat.gyr.z
 
         mes = np.array([pan, vpan, tilt, vtilt])
-        return mes
+        self.setState(mes)
