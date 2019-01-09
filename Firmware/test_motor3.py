@@ -10,7 +10,7 @@ from RPFirmware.Logger import logger
 
 
 class Motor (object):
-    def __init__(self, slp, m0, m1, m2, dir, stp, nstp, reduc, frac):
+    def __init__(self, slp, m0, m1, m2, dir, stp, nstp, reduc):
         self._slp  = slp
         self._m0   = m0
         self._m1   = m1
@@ -41,8 +41,6 @@ class Motor (object):
         self.pi.write(self._stp , 0)
 
         self.old_wid = None
-
-        self.setFracStep(frac)
 
     def activate(self):
         self.pi.write(self._slp, 1)
@@ -100,35 +98,6 @@ class Motor (object):
         time.sleep(t)
         wr = self.setSpeed(0)
 
-    def setFrequency(self, freq):
-        if freq == 0:
-            micros = int(1e6/50.)
-        else:
-            micros = int(1e6/freq)
-
-        self.pi.wave_add_generic([
-           pigpio.pulse(1<<self._stp,    0, micros//2),
-           pigpio.pulse(   0, 1<<self._stp, micros//2),
-           ])
-
-        new_wid = self.pi.wave_create()
-
-        if self.old_wid is not None:
-           self.pi.wave_send_using_mode(
-              new_wid, pigpio.WAVE_MODE_REPEAT)
-
-           # Spin until the new wave has started.
-           while self.pi.wave_tx_at() != new_wid:
-              pass
-
-           # It is then safe to delete the old wave.
-           self.pi.wave_delete(self.old_wid)
-
-        else:
-           self.pi.wave_send_repeat(new_wid)
-
-        self.old_wid = new_wid
-
     def setSpeed(self, w):
         # # Sécurité
         # if w > 2*np.pi/10.:
@@ -136,15 +105,45 @@ class Motor (object):
         # elif w < -2*np.pi/10.:
         #     w = -2*np.pi/10.
 
-        freq = np.abs(w/(2*np.pi)*self._den*self._nstp/self._reduc)
+        freq = np.int(np.abs(w/(2*np.pi)*self._den*self._nstp/self._reduc))
 
         if w < 0.:
             self.pi.write(self._dir, 1)
         else:
             self.pi.write(self._dir, 0)
 
-        self.setFrequency(freq)
+        if w == 0:
+            self.pi.wave_tx_stop()
 
+            if self.old_wid is not None:
+               self.pi.wave_delete(self.old_wid)
+
+        else:
+            micros = int(1e6/freq)
+            self.pi.wave_add_generic([
+               pigpio.pulse(1<<self._stp,    0, micros//2),
+               pigpio.pulse(   0, 1<<self._stp, micros//2),
+               ])
+
+            new_wid = self.pi.wave_create()
+
+            if self.old_wid is not None:
+               self.pi.wave_send_using_mode(
+                  new_wid, pigpio.WAVE_MODE_REPEAT_SYNC)
+
+               # Spin until the new wave has started.
+               while self.pi.wave_tx_at() != new_wid:
+                  pass
+
+               # It is then safe to delete the old wave.
+               self.pi.wave_delete(self.old_wid)
+
+            else:
+               self.pi.wave_send_repeat(new_wid)
+
+            self.old_wid = new_wid
+
+        return w
 
 
 class PanMotor (Motor, metaclass=Singleton):
@@ -154,3 +153,11 @@ class PanMotor (Motor, metaclass=Singleton):
 class TiltMotor (Motor, metaclass=Singleton):
     def __init__(self):
         Motor.__init__(self, **tilt_motor)
+
+
+m = PanMotor()
+m.activate()
+m.setFracStep(16)
+m.turn(2*np.pi, speed=2*np.pi/1)
+m.turn(-2*np.pi, speed=2*np.pi/1)
+m.deactivate()

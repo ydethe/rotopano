@@ -5,8 +5,9 @@ pan_motor = {'slp':27,
              'dir':16,
              'stp':19,
              'nstp':200,
-             # 'reduc':0.75,
-             'reduc':1.,
+             'reduc':0.75,
+             # 'reduc':1.,
+             'frac':16,
             }
 
 tilt_motor = {'slp':27,
@@ -17,6 +18,7 @@ tilt_motor = {'slp':27,
               'stp':5,
               'nstp':200,
               'reduc':1.,
+              'frac':16,
              }
 
 shutter = 24
