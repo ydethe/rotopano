@@ -12,14 +12,14 @@ class StateHandler(BaseHandler):
         args = self.form_to_dict()
         act = ActionManager()
         rm  = ResourcesManager()
-        
+
         aa = args['action']
 
         if not 'action' in args.keys():
             raise KeyError
 
         dat = act.handleRequest(args)
-        
-        logger.debug("StateHandler : action=%s, dat=%s\n" % (aa, str(dat)))
-        
+
+        # logger.debug("StateHandler : action=%s, dat=%s\n" % (aa, str(dat)))
+
         self.write(json.dumps(dat))

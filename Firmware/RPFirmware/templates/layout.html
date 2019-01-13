@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    
+
     <title>Rotopano</title>
 
     <!-- Bootstrap core CSS -->
@@ -30,9 +30,9 @@
             <li class="nav-item">
               <a class="nav-link" href="/gui/tracking">Tracking</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="/plot/gui">Plotting</a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" href="/gui/config">Config</a>
             </li>
@@ -45,20 +45,17 @@
     <main role="main" align="center" class="container">
       <h1 class="mt-5">{% block title %}{% end %}</h1>
     </main>
-    
+
     {% block block_contenu %}{% end %}
-    
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/static/js/jquery-3.3.1.min.js"></script>
     <script src="/static/js/popper.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
-    
+
     {% block block_scripts %}{% end %}
-    
+
   </body>
 </html>
-
-
-
