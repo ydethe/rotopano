@@ -6,13 +6,18 @@ import gphoto2 as gp
 
 from RPFirmware.resources.EXIF import set_gps_location
 from RPFirmware.resources.GPS import GPS
+from RPFirmware.Logger import logger
 
 
 class APN (object, metaclass=Singleton):
     def __init__(self):
         self.context = gp.gp_context_new()
         self.camera = gp.check_result(gp.gp_camera_new())
-        self.connect()
+        self.conn = self.connect()
+        if self.conn:
+            logger.info("Connection APN réussie")
+        else:
+            logger.info("Connection APN échouée")
 
     def connect(self):
         for _ in range(10):
@@ -26,7 +31,7 @@ class APN (object, metaclass=Singleton):
             # no self.camera, try again in 2 seconds
             gp.gp_camera_exit(self.camera, self.context)
 
-        raise gp.GPhoto2Error(error)
+        # raise gp.GPhoto2Error(error)
         return False
 
     def getCameraDescription(self):
@@ -39,6 +44,9 @@ class APN (object, metaclass=Singleton):
             Path to the jpg stored in the camera
 
         '''
+        if not self.conn:
+            return None
+
         apn_path = gp.check_result(gp.gp_camera_capture(self.camera, gp.GP_CAPTURE_IMAGE))
         g = GPS()
         tps,lat,lon,alt = g.getTpsLatLonAlt()
@@ -47,6 +55,9 @@ class APN (object, metaclass=Singleton):
         return apn_path
 
     def downloadPicture(self, apn_path, loc_path):
+        if not self.conn:
+            return
+
         camera_file = gp.check_result(gp.gp_camera_file_get(self.camera, apn_path.folder, apn_path.name, gp.GP_FILE_TYPE_NORMAL))
         gp.check_result(gp.gp_file_save(camera_file, loc_path))
         tps,lat,lon,alt = apn_path.gps_coords

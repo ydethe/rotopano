@@ -25,5 +25,3 @@ class ResourcesManager (object, metaclass=Singleton):
       logger.info("Pan motor loaded")
       self.tilt = TiltMotor()
       logger.info("Tilt motor loaded")
-      self.clk = Clock(5000)
-      logger.info("Clock loaded")

@@ -44,11 +44,14 @@ class Motor (object):
 
         self.setFracStep(frac)
 
+        self.setSpeed(0)
+
     def activate(self):
         self.pi.write(self._slp, 1)
 
     def deactivate(self):
         self.pi.write(self._slp, 0)
+        self.setSpeed(0)
 
     def isActivated(self):
         return (self.pi.read(self._slp) == 1)
@@ -102,7 +105,8 @@ class Motor (object):
 
     def setFrequency(self, freq):
         if freq == 0:
-            micros = int(1e6/50.)
+            self.pi.wave_tx_stop()
+            return 0.
         else:
             micros = int(1e6/freq)
 
@@ -129,6 +133,9 @@ class Motor (object):
 
         self.old_wid = new_wid
 
+        micros_app = self.pi.wave_get_micros()
+        return 1e6/micros_app
+
     def setSpeed(self, w):
         # # Sécurité
         # if w > 2*np.pi/10.:
@@ -143,7 +150,13 @@ class Motor (object):
         else:
             self.pi.write(self._dir, 0)
 
-        self.setFrequency(freq)
+        f_app = self.setFrequency(freq)
+        w_app = 2*np.pi*f_app*self._reduc/(self._den*self._nstp)
+
+        if w < 0:
+            return -w_app
+        else:
+            return w_app
 
 
 
