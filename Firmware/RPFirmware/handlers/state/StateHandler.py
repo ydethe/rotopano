@@ -23,3 +23,4 @@ class StateHandler(BaseHandler):
         # logger.debug("StateHandler : action=%s, dat=%s\n" % (aa, str(dat)))
 
         self.write(json.dumps(dat))
+        

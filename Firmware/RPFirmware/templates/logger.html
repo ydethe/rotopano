@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}Logger{% end %}
+
+{% block block_contenu %}
+
+<textarea class="form-control" id="content" rows="7" readonly></textarea>
+
+{% end %}
+
+{% block block_scripts %}
+
+<script type="text/javascript">
+
+setInterval(function(){
+    $.ajax({ url: "/state?action=logger&cmd=start", success: function(data){
+        $("#content")
+          .text(data.content);
+        $('#content').scrollTop($('#content')[0].scrollHeight);
+    }, dataType: "json"});
+}, 500);
+
+
+</script>
+
+{% end %}
