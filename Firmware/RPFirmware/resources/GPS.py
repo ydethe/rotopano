@@ -28,5 +28,6 @@ class GPS (object, metaclass=Singleton):
 
 
 if __name__ == '__main__':
-    g = GPS()
-    g.getTpsLatLonAlt()
+   g = GPS()
+   g.getTpsLatLonAlt()
+   

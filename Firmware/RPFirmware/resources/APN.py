@@ -13,12 +13,7 @@ class APN (object, metaclass=Singleton):
     def __init__(self):
         self.context = gp.gp_context_new()
         self.camera = gp.check_result(gp.gp_camera_new())
-        self.conn = self.connect()
-        if self.conn:
-            logger.info("Connection APN réussie")
-        else:
-            logger.info("Connection APN échouée")
-
+        
     def connect(self):
         for _ in range(10):
             time.sleep(0.2)
@@ -26,12 +21,14 @@ class APN (object, metaclass=Singleton):
             if error == gp.GP_OK:
                 # operation completed successfully so exit loop
                 self.camera_description = str(gp.check_result(gp.gp_camera_get_summary(self.camera, self.context)))
+                self.conn = True
                 return True
 
             # no self.camera, try again in 2 seconds
             gp.gp_camera_exit(self.camera, self.context)
 
         # raise gp.GPhoto2Error(error)
+        self.conn = False
         return False
 
     def getCameraDescription(self):

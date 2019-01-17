@@ -4,6 +4,7 @@ import socket
 import json
 import logging
 import datetime
+import os
 
 gpsd_socket = None
 gpsd_stream = None
@@ -245,6 +246,18 @@ class GpsResponse(object):
             return "<GpsResponse 3D Fix {} {} ({} m)>".format(self.lat, self.lon, self.alt)
 
 
+def device():
+    """ Get information about current gps device
+    :return: dict
+    """
+    global state
+    return {
+        'path': state['devices']['devices'][0]['path'],
+        'speed': state['devices']['devices'][0]['bps'],
+        'driver': state['devices']['devices'][0]['driver']
+    }
+
+
 def connect(host="127.0.0.1", port=2947):
     """ Connect to a GPSD instance
     :param host: hostname for the GPSD server
@@ -281,15 +294,6 @@ def get_current():
         raise Exception(
             "Unexpected message received from gps: {}".format(response['class']))
     return GpsResponse.from_json(response)
-
-
-def device():
-    """ Get information about current gps device
-    :return: dict
-    """
-    global state
-    return {
-        'path': state['devices']['devices'][0]['path'],
-        'speed': state['devices']['devices'][0]['bps'],
-        'driver': state['devices']['devices'][0]['driver']
-    }
+    
+    
+    

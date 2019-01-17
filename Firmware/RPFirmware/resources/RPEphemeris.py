@@ -8,7 +8,7 @@ from astropy.time import Time
 from astropy.coordinates import ICRS, get_body, solar_system_ephemeris, SkyCoord, EarthLocation, AltAz
 
 
-cds.enable()
+    cds.enable()
 
 class RPEphemeris (object, metaclass=Singleton):
     def __init__(self):

@@ -1,4 +1,5 @@
 import os
+
 import piexif
 from fractions import Fraction
 
