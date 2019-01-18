@@ -146,11 +146,10 @@ class Motor (object):
 
         freq = np.abs(w/(2*np.pi)*self._den*self._nstp/self._reduc)
 
-        if not self.stub:
-            if w < 0.:
-                self.pi.write(self._dir, 1)
-            else:
-                self.pi.write(self._dir, 0)
+        if w < 0.:
+            self.pi.write(self._dir, 1)
+        else:
+            self.pi.write(self._dir, 0)
 
         f_app = self.setFrequency(freq)
         w_app = 2*np.pi*f_app*self._reduc/(self._den*self._nstp)

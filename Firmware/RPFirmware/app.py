@@ -13,7 +13,7 @@ from RPFirmware.handlers.gui.LoggerGUIHandler import LoggerGUIHandler
 from RPFirmware.handlers.gui.ConfigGUIHandler import ConfigGUIHandler
 from RPFirmware.handlers.state.StateHandler import StateHandler
 from RPFirmware.handlers.IndexHandler import IndexHandler
-from RPFirmware.handlers.gui.PlotHandler import PlotHandler
+# from RPFirmware.handlers.gui.PlotHandler import PlotHandler
 
 from RPFirmware.ResourcesManager import ResourcesManager
 
@@ -23,9 +23,7 @@ def make_app():
     ResourcesManager()
 
     am = ActionManager()
-    ac = am.getAction('plotting')
-    ac.start({})
-
+    
     app = WSGIApplication(handlers=[
         url(r"/gui/panorama", PanoramaGUIHandler, name='/gui/panorama'),
         url(r"/", IndexHandler, name='/index'),
