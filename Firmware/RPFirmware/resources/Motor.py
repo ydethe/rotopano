@@ -48,7 +48,8 @@ class Motor (object):
         self.setSpeed(0)
 
     def activate(self):
-        self.pi.write(self._slp, 1)
+        # self.pi.write(self._slp, 1)
+        self.pi.write(self._slp, 0)
 
     def deactivate(self):
         self.pi.write(self._slp, 0)
