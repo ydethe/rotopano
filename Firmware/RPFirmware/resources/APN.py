@@ -18,7 +18,7 @@ class APN (object, metaclass=Singleton):
         gp.gp_camera_exit(self.camera, self.context)
 
         logger.debug("Trying to connect to the camera...")
-        for ic in range(10):
+        for ic in range(1000):
             logger.debug("   Attempt %i/10" % (ic+1))
             time.sleep(0.2)
             error = gp.gp_camera_init(self.camera, self.context)
@@ -33,6 +33,7 @@ class APN (object, metaclass=Singleton):
 
         # raise gp.GPhoto2Error(error)
         logger.debug("Failed to connect camera")
+        time.sleep(0.5)
         return False
 
     def getCameraDescription(self):

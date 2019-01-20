@@ -110,9 +110,8 @@ class PanoramaAction (BaseAction):
 
                 # Prend en photo le zenit
                 self.rm.tilt.turn(np.pi/2-(kwargs['sit_counter']-1)*kwargs['sit_step'], speed=2*np.pi/10.)
-                apn_path = self.apn.takePicture()
+                apn_path = self.apn.takePicture('pics/photo_G001_S%3.3i.jpg' % kwargs['sit_counter'])
                 time.sleep(kwargs['pano_interval'])
-                self.apn.downloadPicture(apn_path, 'pics/photo_G001_S%3.3i.jpg' % kwargs['sit_counter'])
                 # FIN Prend en photo le zenit
 
                 kwargs['sit_counter'] = 0
