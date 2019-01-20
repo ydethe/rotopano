@@ -20,9 +20,10 @@ class BaseAction (object):
     def loop(self, kwargs):
         raise NotImplementedError()
 
-    def start(self, kwargs={}):
-        self.kwargs.update(**kwargs)
+    def start(self, kwargs_opt={}):
         self.reset()
+        self.kwargs.update(**kwargs_opt)
+        kwargs = dict(**self.kwargs)
         while self.loop(kwargs):
             pass
 

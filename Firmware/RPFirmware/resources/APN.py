@@ -48,16 +48,16 @@ class APN (object, metaclass=Singleton):
         logger.debug("Taking picture...")
         if self.connect():
             apn_path = gp.check_result(gp.gp_camera_capture(self.camera, gp.GP_CAPTURE_IMAGE))
-            g = GPS()
-            tps,lat,lon,alt = g.getTpsLatLonAlt()
-            apn_path.gps_coords = (tps,lat,lon,alt)
+            # g = GPS()
+            # tps,lat,lon,alt = g.getTpsLatLonAlt()
+            # apn_path.gps_coords = (tps,lat,lon,alt)
 
             logger.debug("Downloading picture %s/%s ..." % (apn_path.folder, apn_path.name))
             camera_file = gp.check_result(gp.gp_camera_file_get(self.camera, apn_path.folder, apn_path.name, gp.GP_FILE_TYPE_NORMAL))
             gp.check_result(gp.gp_file_save(camera_file, loc_path))
-            tps,lat,lon,alt = apn_path.gps_coords
-            set_gps_location(loc_path, lat, lon, alt)
-            logger.debug("Picture downloaded")
+            # tps,lat,lon,alt = apn_path.gps_coords
+            # set_gps_location(loc_path, lat, lon, alt)
+            logger.info("Picture downloaded")
 
     def __del__(self):
         gp.check_result(gp.gp_camera_exit(self.camera))
