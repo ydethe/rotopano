@@ -16,7 +16,7 @@ tilt_motor = {'slp':27,
               'dir':22,
               'stp':5,
               'nstp':200,
-              'reduc':1.,
+              'reduc':-1.,
               'frac':16,
              }
 

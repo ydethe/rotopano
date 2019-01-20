@@ -99,7 +99,7 @@ class Motor (object):
             speed *= -1.
         wr = self.setSpeed(speed)
 #         logger.debug("Vitesses : %f, %f\n" % (speed, wr))
-        t = angle/wr
+        t = np.abs(angle/wr)
 #         logger.debug("Temps tour : %f\n" % t)
         time.sleep(t)
         wr = self.setSpeed(0)
@@ -146,7 +146,7 @@ class Motor (object):
 
         freq = np.abs(w/(2*np.pi)*self._den*self._nstp/self._reduc)
 
-        if w < 0.:
+        if self._reduc*w < 0.:
             self.pi.write(self._dir, 1)
         else:
             self.pi.write(self._dir, 0)
