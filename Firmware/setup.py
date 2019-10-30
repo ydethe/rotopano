@@ -64,6 +64,7 @@ setup(
         'scipy',
         'numpy',
         'gpsd-py3',
+        'begin',
         'singleton3',
         'astropy',
         'jplephem',
